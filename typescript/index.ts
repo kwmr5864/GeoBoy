@@ -16,13 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-$(function () {
-    $('#btnCheck').click(function () {
+$(function() {
+    $('#btnCheck').click(function() {
         if (navigator.geolocation) {
-            alert('お使いのアプリで位置情報を取得できます');
+            alert('お使いのアプリで位置情報を取得できます')
+        } else {
+            alert('お使いのアプリでは位置情報を取得できません')
         }
-        else {
-            alert('お使いのアプリでは位置情報を取得できません');
-        }
-    });
-});
+    })
+})
