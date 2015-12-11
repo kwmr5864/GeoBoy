@@ -19,7 +19,9 @@
 $(function() {
     $('#btnCheck').click(function() {
         if (navigator.geolocation) {
-            alert('お使いのアプリで位置情報を取得できます')
+            navigator.geolocation.getCurrentPosition(function(position) {
+                alert(`${position.coords.latitude}, ${position.coords.longitude}`)
+            })
         } else {
             alert('お使いのアプリでは位置情報を取得できません')
         }
