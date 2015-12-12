@@ -16,14 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+/// <reference path="GeoPosition.ts" />
+
+var geoPosition = new GeoPosition()
+
 $(function() {
     $('#btnCheck').click(function() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                alert(`${position.coords.latitude}, ${position.coords.longitude}`)
-            }, function(error) { alert(error.message) }, {enableHighAccuracy: true})
-        } else {
-            alert('お使いのアプリでは位置情報を取得できません')
-        }
+        geoPosition.getPosition()
     })
 })
