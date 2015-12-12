@@ -1,6 +1,6 @@
 class GeoPosition {
     private geolocation: Geolocation = null
-    private options: {string?: string} = {}
+    private options: {[key: string]: boolean} = {enableHighAccuracy: true}
     constructor() {
         if (navigator.geolocation) {
             this.geolocation = navigator.geolocation

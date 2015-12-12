@@ -1,7 +1,7 @@
 var GeoPosition = (function () {
     function GeoPosition() {
         this.geolocation = null;
-        this.options = {};
+        this.options = { enableHighAccuracy: true };
         if (navigator.geolocation) {
             this.geolocation = navigator.geolocation;
         }
