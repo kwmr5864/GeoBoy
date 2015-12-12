@@ -21,7 +21,7 @@ $(function () {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 alert(position.coords.latitude + ", " + position.coords.longitude);
-            });
+            }, function (error) { alert(error.message); }, { enableHighAccuracy: true });
         }
         else {
             alert('お使いのアプリでは位置情報を取得できません');
