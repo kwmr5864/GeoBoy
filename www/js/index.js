@@ -30,7 +30,8 @@ var GeoPosition = (function () {
         }
     };
     GeoPosition.prototype.successCallback = function (position) {
-        alert(position.coords.latitude + ", " + position.coords.longitude);
+        $('#txtLat').val(position.coords.latitude);
+        $('#txtLon').val(position.coords.longitude);
     };
     GeoPosition.prototype.errorCallback = function (error) {
         alert('お使いのアプリでは位置情報を取得できません');

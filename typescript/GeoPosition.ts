@@ -25,7 +25,8 @@ class GeoPosition {
         }
     }
     private successCallback(position: Position) {
-        alert(`${position.coords.latitude}, ${position.coords.longitude}`)
+        $('#txtLat').val(position.coords.latitude)
+        $('#txtLon').val(position.coords.longitude)
     }
     private errorCallback(error) {
         alert('お使いのアプリでは位置情報を取得できません')
