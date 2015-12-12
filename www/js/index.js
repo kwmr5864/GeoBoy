@@ -16,15 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+var GeoPosition = (function () {
+    function GeoPosition() {
+        this.geolocation = null;
+        this.options = {};
+        if (navigator.geolocation) {
+            this.geolocation = navigator.geolocation;
+        }
+    }
+    GeoPosition.prototype.getPosition = function () {
+        if (!this.geolocation) {
+            return;
+        }
+        this.geolocation.getCurrentPosition(this.successCallback, this.errorCallback, this.options);
+    };
+    GeoPosition.prototype.successCallback = function (position) {
+        alert(position.coords.latitude + ", " + position.coords.longitude);
+    };
+    GeoPosition.prototype.errorCallback = function (error) {
+        alert('お使いのアプリでは位置情報を取得できません');
+    };
+    return GeoPosition;
+})();
+var geoPosition = new GeoPosition();
 $(function () {
     $('#btnCheck').click(function () {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                alert(position.coords.latitude + ", " + position.coords.longitude);
-            }, function (error) { alert(error.message); }, { enableHighAccuracy: true });
-        }
-        else {
-            alert('お使いのアプリでは位置情報を取得できません');
-        }
+        geoPosition.getPosition();
     });
 });

@@ -16,14 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+class GeoPosition {
+	private geolocation: Geolocation = null
+	private options: {string?: string} = {}
+	constructor() {
+		if (navigator.geolocation) {
+			this.geolocation = navigator.geolocation
+		}
+	}
+	getPosition() {
+		if (!this.geolocation) { return }
+		this.geolocation.getCurrentPosition(this.successCallback, this.errorCallback, this.options)
+	}
+	private successCallback(position: Position) {
+		alert(`${position.coords.latitude}, ${position.coords.longitude}`)
+	}
+	private errorCallback(error) {
+		alert('お使いのアプリでは位置情報を取得できません')
+	}
+}
+
+var geoPosition = new GeoPosition()
+
 $(function() {
     $('#btnCheck').click(function() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                alert(`${position.coords.latitude}, ${position.coords.longitude}`)
-            }, function(error) { alert(error.message) }, {enableHighAccuracy: true})
-        } else {
-            alert('お使いのアプリでは位置情報を取得できません')
-        }
+        geoPosition.getPosition()
     })
 })
