@@ -1,7 +1,7 @@
 var GeoPosition = (function () {
     function GeoPosition() {
         this.geolocation = null;
-        this.options = { enableHighAccuracy: true };
+        this.watchId = null;
         if (navigator.geolocation) {
             this.geolocation = navigator.geolocation;
         }
@@ -10,7 +10,24 @@ var GeoPosition = (function () {
         if (!this.geolocation) {
             return;
         }
-        this.geolocation.getCurrentPosition(this.successCallback, this.errorCallback, this.options);
+        this.geolocation.getCurrentPosition(this.successCallback, this.errorCallback, {
+            enableHighAccuracy: true
+        });
+    };
+    GeoPosition.prototype.watchPosition = function (watchable) {
+        if (!this.geolocation) {
+            return;
+        }
+        if (watchable) {
+            this.watchId = this.geolocation.watchPosition(this.successCallback, this.errorCallback, {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            });
+        }
+        else {
+            this.geolocation.clearWatch(this.watchId);
+        }
     };
     GeoPosition.prototype.successCallback = function (position) {
         alert(position.coords.latitude + ", " + position.coords.longitude);
@@ -41,7 +58,13 @@ var GeoPosition = (function () {
 /// <reference path="GeoPosition.ts" />
 var geoPosition = new GeoPosition();
 $(function () {
-    $('#btnCheck').click(function () {
+    $('#btnGetPosition').click(function () {
         geoPosition.getPosition();
+    });
+    $('#btnWatchPositionOn').click(function () {
+        geoPosition.watchPosition(true);
+    });
+    $('#btnWatchPositionOff').click(function () {
+        geoPosition.watchPosition(false);
     });
 });
