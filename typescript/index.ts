@@ -21,7 +21,13 @@
 var geoPosition = new GeoPosition()
 
 $(function() {
-    $('#btnCheck').click(function() {
+    $('#btnGetPosition').click(function() {
         geoPosition.getPosition()
+    })
+    $('#btnWatchPositionOn').click(function() {
+        geoPosition.watchPosition(true)
+    })
+    $('#btnWatchPositionOff').click(function() {
+        geoPosition.watchPosition(false)
     })
 })
