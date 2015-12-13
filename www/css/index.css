@@ -16,3 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+#map {
+    width: 100%;
+    height: 400px;
+}

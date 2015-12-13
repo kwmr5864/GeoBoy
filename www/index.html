@@ -29,7 +29,6 @@
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
         <meta charset="UTF-8">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
@@ -45,9 +44,11 @@
             <button id="btnWatchPositionOff">Watch Off</button>
             <div>lat:<input id="txtLat" type="text" readonly></div>
             <div>lon:<input id="txtLon" type="text" readonly></div>
+            <div id="map"></div>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/jquery-1.11.3.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
     </body>
 </html>

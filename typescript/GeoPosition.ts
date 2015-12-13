@@ -25,8 +25,21 @@ class GeoPosition {
         }
     }
     private successCallback(position: Position) {
-        $('#txtLat').val(position.coords.latitude)
-        $('#txtLon').val(position.coords.longitude)
+        let lat = position.coords.latitude
+        let lon = position.coords.longitude
+        $('#txtLat').val(lat)
+        $('#txtLon').val(lon)
+        var position = new google.maps.LatLng(lat, lon)
+        var map = new google.maps.Map($('#map')[0], {
+            zoom: 14,
+            center: position,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            scaleControl: true
+        })
+        var marker = new google.maps.Marker({
+            map: map,
+            position: position
+        })
     }
     private errorCallback(error) {
         alert('お使いのアプリでは位置情報を取得できません')
