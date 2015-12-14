@@ -27,8 +27,6 @@ class GeoPosition {
     private successCallback(position: Position) {
         let lat = position.coords.latitude
         let lon = position.coords.longitude
-        $('#txtLat').val(lat)
-        $('#txtLon').val(lon)
         var position = new google.maps.LatLng(lat, lon)
         var map = new google.maps.Map($('#map')[0], {
             zoom: 14,

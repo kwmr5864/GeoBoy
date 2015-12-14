@@ -32,8 +32,6 @@ var GeoPosition = (function () {
     GeoPosition.prototype.successCallback = function (position) {
         var lat = position.coords.latitude;
         var lon = position.coords.longitude;
-        $('#txtLat').val(lat);
-        $('#txtLon').val(lon);
         var position = new google.maps.LatLng(lat, lon);
         var map = new google.maps.Map($('#map')[0], {
             zoom: 14,
