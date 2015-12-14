@@ -17,8 +17,10 @@
  * under the License.
  */
 /// <reference path="GeoPosition.ts" />
+/// <reference path="AppStorage.ts" />
 
 var geoPosition = new GeoPosition()
+var appStorage = new AppStorage()
 
 $(function() {
     $('#btnGetPosition').click(function() {

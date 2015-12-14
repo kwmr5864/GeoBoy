@@ -32,6 +32,7 @@ var GeoPosition = (function () {
     GeoPosition.prototype.successCallback = function (position) {
         var lat = position.coords.latitude;
         var lon = position.coords.longitude;
+        appStorage.addLog(new Log(lat, lon));
         var position = new google.maps.LatLng(lat, lon);
         var map = new google.maps.Map($('#map')[0], {
             zoom: 14,
@@ -48,6 +49,37 @@ var GeoPosition = (function () {
         alert('お使いのアプリでは位置情報を取得できません');
     };
     return GeoPosition;
+})();
+var Log = (function () {
+    function Log(lat, lon) {
+        this.lat = lat;
+        this.lon = lon;
+        this.createdAt = new Date();
+    }
+    return Log;
+})();
+/// <reference path="Log.ts" />
+var AppStorage = (function () {
+    function AppStorage() {
+        var data = localStorage.getItem(AppStorage.STORAGE_KEY);
+        this.storage = data ? JSON.parse(data) : {
+            index: 0,
+            logs: []
+        };
+    }
+    AppStorage.prototype.addLog = function (log) {
+        this.storage['logs'].push(log);
+        this.storage['index']++;
+        this.save();
+    };
+    AppStorage.prototype.getLogs = function () {
+        return this.storage['logs'];
+    };
+    AppStorage.prototype.save = function () {
+        localStorage[AppStorage.STORAGE_KEY] = JSON.stringify(this.storage);
+    };
+    AppStorage.STORAGE_KEY = 'GeoApp';
+    return AppStorage;
 })();
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -68,7 +100,9 @@ var GeoPosition = (function () {
  * under the License.
  */
 /// <reference path="GeoPosition.ts" />
+/// <reference path="AppStorage.ts" />
 var geoPosition = new GeoPosition();
+var appStorage = new AppStorage();
 $(function () {
     $('#btnGetPosition').click(function () {
         geoPosition.getPosition();
