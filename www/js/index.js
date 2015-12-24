@@ -19,12 +19,18 @@ var AppStorage = (function () {
         this.storage['logs'].push(log);
         this.storage['index']++;
         this.save();
+        this.refresh();
     };
     AppStorage.prototype.getLogs = function () {
         return this.storage['logs'];
     };
     AppStorage.prototype.save = function () {
         localStorage[AppStorage.STORAGE_KEY] = JSON.stringify(this.storage);
+    };
+    AppStorage.prototype.refresh = function () {
+        var targetElement = document.getElementById('controller');
+        var targetScope = angular.element(targetElement).scope();
+        targetScope.$apply();
     };
     AppStorage.STORAGE_KEY = 'GeoApp';
     return AppStorage;
