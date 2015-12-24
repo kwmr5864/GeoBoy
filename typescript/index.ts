@@ -17,17 +17,11 @@
  * under the License.
  */
 /// <reference path="GeoPosition.ts" />
+/// <reference path="AppStorage.ts" />
 
-var geoPosition = new GeoPosition()
+var appStorage = new AppStorage()
 
-$(function() {
-    $('#btnGetPosition').click(function() {
-        geoPosition.getPosition()
-    })
-    $('#btnWatchPositionOn').click(function() {
-        geoPosition.watchPosition(true)
-    })
-    $('#btnWatchPositionOff').click(function() {
-        geoPosition.watchPosition(false)
-    })
+angular.module('GeoBoy', []).controller('MainCtrl', function() {
+    this.geoPosition = new GeoPosition()
+    this.logs = appStorage.getLogs()
 })

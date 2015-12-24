@@ -17,7 +17,7 @@
     specific language governing permissions and limitations
     under the License.
 -->
-<html>
+<html lang="ja" ng-app="GeoBoy">
     <head>
         <!--
         Customize this policy to fit your own app's needs. For more guidance, see:
@@ -37,7 +37,7 @@
         <title>GeoBoy</title>
     </head>
     <body>
-        <div class="container">
+        <div class="container" ng-controller="MainCtrl as main" id="controller">
             <h1>GeoBoy</h1>
             <p>Cordova and Geolocation API</p>
             <ul class="nav nav-tabs">
@@ -52,9 +52,9 @@
                         </div>
                         <div class="panel-body">
                             <div class="btn-group">
-                                <button id="btnGetPosition" class="btn btn-default">Get</button>
-                                <button id="btnWatchPositionOn" class="btn btn-default">Watch On</button>
-                                <button id="btnWatchPositionOff" class="btn btn-default">Watch Off</button>
+                                <button class="btn btn-default" ng-click="main.geoPosition.getPosition()">Get</button>
+                                <button class="btn btn-default" ng-click="main.geoPosition.watchPosition(true)">Watch On</button>
+                                <button class="btn btn-default" ng-click="main.geoPosition.watchPosition(false)">Watch Off</button>
                             </div>
                         </div>
                     </div>
@@ -66,7 +66,22 @@
                             <h2 class="panel-title">取得した位置情報</h2>
                         </div>
                         <div class="panel-body">
-                            none.
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>位置情報</th>
+                                    <th>取得日時</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="x in main.logs track by $index">
+                                    <td>{{ $index }}</td>
+                                    <td>{{ x.lat }},{{ x.lon }}</td>
+                                    <td>{{ x.createdAt }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -75,6 +90,7 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/jquery-1.11.3.js"></script>
         <script type="text/javascript" src="js/bootstrap.js"></script>
+        <script type="text/javascript" src="js/angular.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
     </body>
