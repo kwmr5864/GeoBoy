@@ -1,3 +1,40 @@
+var Log = (function () {
+    function Log(lat, lon) {
+        this.lat = lat;
+        this.lon = lon;
+        this.createdAt = new Date();
+    }
+    return Log;
+})();
+/// <reference path="Log.ts" />
+var AppStorage = (function () {
+    function AppStorage() {
+        var data = localStorage.getItem(AppStorage.STORAGE_KEY);
+        this.storage = data ? JSON.parse(data) : {
+            index: 0,
+            logs: []
+        };
+    }
+    AppStorage.prototype.addLog = function (log) {
+        this.storage['logs'].push(log);
+        this.storage['index']++;
+        this.save();
+        this.refresh();
+    };
+    AppStorage.prototype.getLogs = function () {
+        return this.storage['logs'];
+    };
+    AppStorage.prototype.save = function () {
+        localStorage[AppStorage.STORAGE_KEY] = JSON.stringify(this.storage);
+    };
+    AppStorage.prototype.refresh = function () {
+        var targetElement = document.getElementById('controller');
+        var targetScope = angular.element(targetElement).scope();
+        targetScope.$apply();
+    };
+    AppStorage.STORAGE_KEY = 'GeoApp';
+    return AppStorage;
+})();
 var GeoPosition = (function () {
     function GeoPosition() {
         this.geolocation = null;
@@ -50,37 +87,6 @@ var GeoPosition = (function () {
     };
     return GeoPosition;
 })();
-var Log = (function () {
-    function Log(lat, lon) {
-        this.lat = lat;
-        this.lon = lon;
-        this.createdAt = new Date();
-    }
-    return Log;
-})();
-/// <reference path="Log.ts" />
-var AppStorage = (function () {
-    function AppStorage() {
-        var data = localStorage.getItem(AppStorage.STORAGE_KEY);
-        this.storage = data ? JSON.parse(data) : {
-            index: 0,
-            logs: []
-        };
-    }
-    AppStorage.prototype.addLog = function (log) {
-        this.storage['logs'].push(log);
-        this.storage['index']++;
-        this.save();
-    };
-    AppStorage.prototype.getLogs = function () {
-        return this.storage['logs'];
-    };
-    AppStorage.prototype.save = function () {
-        localStorage[AppStorage.STORAGE_KEY] = JSON.stringify(this.storage);
-    };
-    AppStorage.STORAGE_KEY = 'GeoApp';
-    return AppStorage;
-})();
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -101,16 +107,8 @@ var AppStorage = (function () {
  */
 /// <reference path="GeoPosition.ts" />
 /// <reference path="AppStorage.ts" />
-var geoPosition = new GeoPosition();
 var appStorage = new AppStorage();
-$(function () {
-    $('#btnGetPosition').click(function () {
-        geoPosition.getPosition();
-    });
-    $('#btnWatchPositionOn').click(function () {
-        geoPosition.watchPosition(true);
-    });
-    $('#btnWatchPositionOff').click(function () {
-        geoPosition.watchPosition(false);
-    });
+angular.module('GeoBoy', []).controller('MainCtrl', function () {
+    this.geoPosition = new GeoPosition();
+    this.logs = appStorage.getLogs();
 });
