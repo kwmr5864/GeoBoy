@@ -21,7 +21,10 @@
 
 var appStorage = new AppStorage()
 
-angular.module('GeoBoy', []).controller('MainCtrl', function() {
-    this.geoPosition = new GeoPosition()
-    this.logs = appStorage.getLogs()
+var vm = new Vue({
+    el: '#main',
+    data: {
+        logs: appStorage.getLogs(),
+        geoPosition: new GeoPosition()
+    }
 })

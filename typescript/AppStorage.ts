@@ -14,17 +14,11 @@ class AppStorage {
 		this.storage['logs'].push(log)
 		this.storage['index']++
 		this.save()
-		this.refresh()
 	}
 	getLogs(): [Log] {
 		return this.storage['logs']
 	}
 	private save() {
 		localStorage[AppStorage.STORAGE_KEY] = JSON.stringify(this.storage)
-	}
-	private refresh() {
-        var targetElement = document.getElementById('controller')
-		var targetScope = angular.element(targetElement).scope()
-        targetScope.$apply()
 	}
 }

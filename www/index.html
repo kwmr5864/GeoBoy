@@ -17,7 +17,7 @@
     specific language governing permissions and limitations
     under the License.
 -->
-<html lang="ja" ng-app="GeoBoy">
+<html lang="ja">
     <head>
         <!--
         Customize this policy to fit your own app's needs. For more guidance, see:
@@ -37,7 +37,7 @@
         <title>GeoBoy</title>
     </head>
     <body>
-        <div class="container" ng-controller="MainCtrl as main" id="controller">
+        <div class="container" id="main">
             <h1>GeoBoy</h1>
             <p>Cordova and Geolocation API</p>
             <ul class="nav nav-tabs">
@@ -52,9 +52,9 @@
                         </div>
                         <div class="panel-body">
                             <div class="btn-group">
-                                <button class="btn btn-default" ng-click="main.geoPosition.getPosition()">Get</button>
-                                <button class="btn btn-default" ng-click="main.geoPosition.watchPosition(true)">Watch On</button>
-                                <button class="btn btn-default" ng-click="main.geoPosition.watchPosition(false)">Watch Off</button>
+                                <button class="btn btn-default" @click="geoPosition.getPosition()">Get</button>
+                                <button class="btn btn-default" @click="geoPosition.watchPosition(true)">Watch On</button>
+                                <button class="btn btn-default" @click="geoPosition.watchPositionOff(false)">Watch Off</button>
                             </div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="x in main.logs track by $index">
+                                <tr v-for="x in logs">
                                     <td>{{ $index }}</td>
                                     <td>{{ x.lat }},{{ x.lon }}</td>
                                     <td>{{ x.createdAt }}</td>
@@ -90,7 +90,7 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/jquery-1.11.3.js"></script>
         <script type="text/javascript" src="js/bootstrap.js"></script>
-        <script type="text/javascript" src="js/angular.js"></script>
+        <script type="text/javascript" src="js/vue.min.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
     </body>

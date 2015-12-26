@@ -19,18 +19,12 @@ var AppStorage = (function () {
         this.storage['logs'].push(log);
         this.storage['index']++;
         this.save();
-        this.refresh();
     };
     AppStorage.prototype.getLogs = function () {
         return this.storage['logs'];
     };
     AppStorage.prototype.save = function () {
         localStorage[AppStorage.STORAGE_KEY] = JSON.stringify(this.storage);
-    };
-    AppStorage.prototype.refresh = function () {
-        var targetElement = document.getElementById('controller');
-        var targetScope = angular.element(targetElement).scope();
-        targetScope.$apply();
     };
     AppStorage.STORAGE_KEY = 'GeoApp';
     return AppStorage;
@@ -108,7 +102,10 @@ var GeoPosition = (function () {
 /// <reference path="GeoPosition.ts" />
 /// <reference path="AppStorage.ts" />
 var appStorage = new AppStorage();
-angular.module('GeoBoy', []).controller('MainCtrl', function () {
-    this.geoPosition = new GeoPosition();
-    this.logs = appStorage.getLogs();
+var vm = new Vue({
+    el: '#main',
+    data: {
+        logs: appStorage.getLogs(),
+        geoPosition: new GeoPosition()
+    }
 });
