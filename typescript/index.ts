@@ -31,6 +31,10 @@ var vm = new Vue({
         deleteLog: function(index) {
             appStorage.deleteLog(index)
         },
+        displayPosition: function(lat: number, lon: number): string {
+            let digit = 10000
+            return `(${Math.floor(lat * digit) / digit},${Math.floor(lat * digit) / digit})`
+        }
         displayDatetime: function(datetime: number): string {
             return moment(datetime).format('YYYY/MM/DD HH:mm')
         }
