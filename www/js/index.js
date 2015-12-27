@@ -55,6 +55,19 @@ var GeoPosition = (function () {
             this.geolocation = navigator.geolocation;
         }
     }
+    GeoPosition.showPosition = function (lat, lon) {
+        var position = new google.maps.LatLng(lat, lon);
+        var map = new google.maps.Map($('#map')[0], {
+            zoom: 14,
+            center: position,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            scaleControl: true
+        });
+        var marker = new google.maps.Marker({
+            map: map,
+            position: position
+        });
+    };
     GeoPosition.prototype.getPosition = function () {
         if (!this.geolocation) {
             return;
@@ -83,17 +96,7 @@ var GeoPosition = (function () {
         var lon = position.coords.longitude;
         var index = appStorage.getIndex();
         appStorage.addLog(new Log(index, lat, lon));
-        var position = new google.maps.LatLng(lat, lon);
-        var map = new google.maps.Map($('#map')[0], {
-            zoom: 14,
-            center: position,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            scaleControl: true
-        });
-        var marker = new google.maps.Marker({
-            map: map,
-            position: position
-        });
+        GeoPosition.showPosition(lat, lon);
     };
     GeoPosition.prototype.errorCallback = function (error) {
         alert('お使いのアプリでは位置情報を取得できません');
@@ -131,12 +134,15 @@ var vm = new Vue({
         deleteLog: function (index) {
             appStorage.deleteLog(index);
         },
-        displayPosition: function (lat, lon) {
-            var digit = 10000;
-            return "(" + Math.floor(lat * digit) / digit + "," + Math.floor(lat * digit) / digit + ")";
+        displayDate: function (datetime) {
+            return moment(datetime).format('YYYY/MM/DD');
         },
-        displayDatetime: function (datetime) {
-            return moment(datetime).format('YYYY/MM/DD HH:mm');
+        displayTime: function (datetime) {
+            return moment(datetime).format('HH:mm');
+        },
+        redraw: function (lat, lon) {
+            $('a[href="#home"]').tab('show');
+            GeoPosition.showPosition(lat, lon);
         }
     }
 });

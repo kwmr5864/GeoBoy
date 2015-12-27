@@ -7,14 +7,16 @@
                 table.table.table-striped.table-hover.table-condensed
                     thead
                         tr
-                            th #
-                            th 位置情報
-                            th 取得日時
+                            th No.
+                            th チェックした日
                             th
                     tbody
                         tr(v-for="x in logs")
                             td {{ x.index }}
-                            td {{ displayPosition(x.lat, x.lon) }}
-                            td {{ displayDatetime(x.createdAt) }}
                             td
-                                button.btn.btn-default(@click="deleteLog(x.index)") 消す
+                                {{ displayDate(x.createdAt) }}
+                                small {{ displayTime(x.createdAt) }}
+                            td
+                                .btn-group
+                                    button.btn.btn-primary(@click="redraw(x.lat, x.lon)") 開く
+                                    button.btn.btn-default(@click="deleteLog(x.index)") 消す
