@@ -13,8 +13,8 @@
                             th
                     tbody
                         tr(v-for="x in logs")
-                            td {{ $index }}
+                            td {{ x.index }}
                             td {{ x.lat }},{{ x.lon }}
                             td {{ x.createdAt }}
                             td
-                                button.btn.btn-default 消す
+                                button.btn.btn-default(@click="deleteLog(x.index)") 消す

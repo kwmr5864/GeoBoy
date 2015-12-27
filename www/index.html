@@ -78,11 +78,11 @@ under the License.
                   </thead>
                   <tbody>
                     <tr v-for="x in logs">
-                      <td>{{ $index }}</td>
+                      <td>{{ x.index }}</td>
                       <td>{{ x.lat }},{{ x.lon }}</td>
                       <td>{{ x.createdAt }}</td>
                       <td>
-                        <button class="btn btn-default">消す</button>
+                        <button @click="deleteLog(x.index)" class="btn btn-default">消す</button>
                       </td>
                     </tr>
                   </tbody>
