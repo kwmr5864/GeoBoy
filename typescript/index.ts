@@ -30,6 +30,9 @@ var vm = new Vue({
     methods: {
         deleteLog: function(index) {
             appStorage.deleteLog(index)
+        },
+        displayDatetime: function(datetime: number): string {
+            return moment(datetime).format('YYYY/MM/DD HH:mm')
         }
     }
 })

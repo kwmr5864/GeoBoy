@@ -15,6 +15,6 @@
                         tr(v-for="x in logs")
                             td {{ x.index }}
                             td {{ x.lat }},{{ x.lon }}
-                            td {{ x.createdAt }}
+                            td {{ displayDatetime(x.createdAt) }}
                             td
                                 button.btn.btn-default(@click="deleteLog(x.index)") 消す

@@ -3,7 +3,7 @@ var Log = (function () {
         this.index = index;
         this.lat = lat;
         this.lon = lon;
-        this.createdAt = new Date();
+        this.createdAt = new Date().getTime();
     }
     return Log;
 })();
@@ -130,6 +130,9 @@ var vm = new Vue({
     methods: {
         deleteLog: function (index) {
             appStorage.deleteLog(index);
+        },
+        displayDatetime: function (datetime) {
+            return moment(datetime).format('YYYY/MM/DD HH:mm');
         }
     }
 });

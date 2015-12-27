@@ -80,7 +80,7 @@ under the License.
                     <tr v-for="x in logs">
                       <td>{{ x.index }}</td>
                       <td>{{ x.lat }},{{ x.lon }}</td>
-                      <td>{{ x.createdAt }}</td>
+                      <td>{{ displayDatetime(x.createdAt) }}</td>
                       <td>
                         <button @click="deleteLog(x.index)" class="btn btn-default">消す</button>
                       </td>
@@ -96,6 +96,7 @@ under the License.
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/jquery-1.11.3.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/moment.min.js"></script>
     <script type="text/javascript" src="js/vue.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
