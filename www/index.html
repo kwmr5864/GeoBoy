@@ -54,7 +54,7 @@ under the License.
               <div class="btn-group">
                 <button @click="geoPosition.getPosition()" class="btn btn-default">Get</button>
                 <button @click="geoPosition.watchPosition(true)" class="btn btn-default">Watch On</button>
-                <button @click="geoPosition.watchPositionOff(false)" class="btn btn-default">Watch Off</button>
+                <button @click="geoPosition.watchPosition(false)" class="btn btn-default">Watch Off</button>
               </div>
             </div>
           </div>
@@ -66,22 +66,28 @@ under the License.
               <h2 class="panel-title">取得した位置情報</h2>
             </div>
             <div class="panel-body">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>No.</th>
-                    <th>位置情報</th>
-                    <th>取得日時</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="x in logs">
-                    <td>{{ $index }}</td>
-                    <td>{{ x.lat }},{{ x.lon }}</td>
-                    <td>{{ x.createdAt }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table class="table table-striped table-hover table-condensed">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>位置情報</th>
+                      <th>取得日時</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="x in logs">
+                      <td>{{ x.index }}</td>
+                      <td>{{ x.lat }},{{ x.lon }}</td>
+                      <td>{{ x.createdAt }}</td>
+                      <td>
+                        <button @click="deleteLog(x.index)" class="btn btn-default">消す</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

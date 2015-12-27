@@ -26,5 +26,10 @@ var vm = new Vue({
     data: {
         logs: appStorage.getLogs(),
         geoPosition: new GeoPosition()
+    },
+    methods: {
+        deleteLog: function(index) {
+            appStorage.deleteLog(index)
+        }
     }
 })
