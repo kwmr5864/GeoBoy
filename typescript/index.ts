@@ -21,7 +21,22 @@
 
 var appStorage = new AppStorage()
 
-angular.module('GeoBoy', []).controller('MainCtrl', function() {
-    this.geoPosition = new GeoPosition()
-    this.logs = appStorage.getLogs()
+var vm = new Vue({
+    el: '#main',
+    data: {
+        logs: appStorage.getLogs(),
+        geoPosition: new GeoPosition()
+    },
+    methods: {
+        deleteLog: function(index) {
+            appStorage.deleteLog(index)
+        },
+        displayPosition: function(lat: number, lon: number): string {
+            let digit = 10000
+            return `(${Math.floor(lat * digit) / digit},${Math.floor(lat * digit) / digit})`
+        }
+        displayDatetime: function(datetime: number): string {
+            return moment(datetime).format('YYYY/MM/DD HH:mm')
+        }
+    }
 })

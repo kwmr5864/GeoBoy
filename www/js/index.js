@@ -1,8 +1,9 @@
 var Log = (function () {
-    function Log(lat, lon) {
+    function Log(index, lat, lon) {
+        this.index = index;
         this.lat = lat;
         this.lon = lon;
-        this.createdAt = new Date();
+        this.createdAt = new Date().getTime();
     }
     return Log;
 })();
@@ -11,7 +12,7 @@ var AppStorage = (function () {
     function AppStorage() {
         var data = localStorage.getItem(AppStorage.STORAGE_KEY);
         this.storage = data ? JSON.parse(data) : {
-            index: 0,
+            index: 1,
             logs: []
         };
     }
@@ -19,18 +20,29 @@ var AppStorage = (function () {
         this.storage['logs'].push(log);
         this.storage['index']++;
         this.save();
-        this.refresh();
+    };
+    AppStorage.prototype.deleteLog = function (index) {
+        var logs = this.getLogs();
+        for (var i in logs) {
+            var log = logs[i];
+            if (log.index == index) {
+                logs.splice(i, 1);
+                this.storage['logs'] = logs;
+                this.save();
+            }
+        }
     };
     AppStorage.prototype.getLogs = function () {
-        return this.storage['logs'];
+        return this.get('logs');
+    };
+    AppStorage.prototype.getIndex = function () {
+        return this.get('index');
+    };
+    AppStorage.prototype.get = function (name) {
+        return this.storage[name];
     };
     AppStorage.prototype.save = function () {
         localStorage[AppStorage.STORAGE_KEY] = JSON.stringify(this.storage);
-    };
-    AppStorage.prototype.refresh = function () {
-        var targetElement = document.getElementById('controller');
-        var targetScope = angular.element(targetElement).scope();
-        targetScope.$apply();
     };
     AppStorage.STORAGE_KEY = 'GeoApp';
     return AppStorage;
@@ -69,7 +81,8 @@ var GeoPosition = (function () {
     GeoPosition.prototype.successCallback = function (position) {
         var lat = position.coords.latitude;
         var lon = position.coords.longitude;
-        appStorage.addLog(new Log(lat, lon));
+        var index = appStorage.getIndex();
+        appStorage.addLog(new Log(index, lat, lon));
         var position = new google.maps.LatLng(lat, lon);
         var map = new google.maps.Map($('#map')[0], {
             zoom: 14,
@@ -108,7 +121,22 @@ var GeoPosition = (function () {
 /// <reference path="GeoPosition.ts" />
 /// <reference path="AppStorage.ts" />
 var appStorage = new AppStorage();
-angular.module('GeoBoy', []).controller('MainCtrl', function () {
-    this.geoPosition = new GeoPosition();
-    this.logs = appStorage.getLogs();
+var vm = new Vue({
+    el: '#main',
+    data: {
+        logs: appStorage.getLogs(),
+        geoPosition: new GeoPosition()
+    },
+    methods: {
+        deleteLog: function (index) {
+            appStorage.deleteLog(index);
+        },
+        displayPosition: function (lat, lon) {
+            var digit = 10000;
+            return "(" + Math.floor(lat * digit) / digit + "," + Math.floor(lat * digit) / digit + ")";
+        },
+        displayDatetime: function (datetime) {
+            return moment(datetime).format('YYYY/MM/DD HH:mm');
+        }
+    }
 });

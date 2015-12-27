@@ -6,7 +6,7 @@ class AppStorage {
 	constructor() {
 		var data: string = localStorage.getItem(AppStorage.STORAGE_KEY)
 		this.storage = data ? JSON.parse(data) : {
-			index: 0,
+			index: 1,
 			logs: []
 		}
 	}
@@ -14,17 +14,28 @@ class AppStorage {
 		this.storage['logs'].push(log)
 		this.storage['index']++
 		this.save()
-		this.refresh()
+	}
+	deleteLog(index: number) {
+	    var logs = this.getLogs()
+	    for(var i in logs) {
+	        var log = logs[i]
+	        if(log.index == index) {
+	            logs.splice(i, 1)
+	            this.storage['logs'] = logs
+	            this.save()
+	        }
+	    }
 	}
 	getLogs(): [Log] {
-		return this.storage['logs']
+		return this.get('logs')
+	}
+	getIndex(): number {
+	    return this.get('index')
+	}
+	private get(name: string): string {
+	    return this.storage[name]
 	}
 	private save() {
 		localStorage[AppStorage.STORAGE_KEY] = JSON.stringify(this.storage)
-	}
-	private refresh() {
-        var targetElement = document.getElementById('controller')
-		var targetScope = angular.element(targetElement).scope()
-        targetScope.$apply()
 	}
 }

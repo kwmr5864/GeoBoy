@@ -1,0 +1,10 @@
+#home.tab-pane.in.active
+    .panel.panel-default
+        .panel-heading
+            h2.panel-title 位置情報を取得できます
+        .panel-body
+            .btn-group
+                button.btn.btn-default(@click="geoPosition.getPosition()") Get
+                button.btn.btn-default(@click="geoPosition.watchPosition(true)") Watch On
+                button.btn.btn-default(@click="geoPosition.watchPosition(false)") Watch Off
+    #map
