@@ -71,7 +71,6 @@ under the License.
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>位置情報</th>
                       <th>取得日時</th>
                       <th></th>
                     </tr>
@@ -79,10 +78,12 @@ under the License.
                   <tbody>
                     <tr v-for="x in logs">
                       <td>{{ x.index }}</td>
-                      <td>{{ displayPosition(x.lat, x.lon) }}</td>
                       <td>{{ displayDatetime(x.createdAt) }}</td>
                       <td>
-                        <button @click="deleteLog(x.index)" class="btn btn-default">消す</button>
+                        <div class="btn-group">
+                          <button @click="redraw(x.lat, x.lon)" class="btn btn-primary">開く</button>
+                          <button @click="deleteLog(x.index)" class="btn btn-default">消す</button>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
