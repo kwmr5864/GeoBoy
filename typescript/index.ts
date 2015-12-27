@@ -31,8 +31,11 @@ var vm = new Vue({
         deleteLog: function(index) {
             appStorage.deleteLog(index)
         },
-        displayDatetime: function(datetime: number): string {
-            return moment(datetime).format('YYYY/MM/DD HH:mm')
+        displayDate: function(datetime: number): string {
+            return moment(datetime).format('YYYY/MM/DD')
+        },
+        displayTime: function(datetime: number): string {
+            return moment(datetime).format('HH:mm')
         },
         redraw: function(lat: number, lon: number) {
             $('a[href="#home"]').tab('show')

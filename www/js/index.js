@@ -134,8 +134,11 @@ var vm = new Vue({
         deleteLog: function (index) {
             appStorage.deleteLog(index);
         },
-        displayDatetime: function (datetime) {
-            return moment(datetime).format('YYYY/MM/DD HH:mm');
+        displayDate: function (datetime) {
+            return moment(datetime).format('YYYY/MM/DD');
+        },
+        displayTime: function (datetime) {
+            return moment(datetime).format('HH:mm');
         },
         redraw: function (lat, lon) {
             $('a[href="#home"]').tab('show');
