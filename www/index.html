@@ -39,7 +39,7 @@ under the License.
   <body>
     <div id="main" class="container">
       <h1>GeoBoy</h1>
-      <p>Cordova and Geolocation API</p>
+      <p v-html="message"></p>
       <ul class="nav nav-tabs">
         <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
         <li><a href="#logs" data-toggle="tab">Logs</a></li>
@@ -48,13 +48,13 @@ under the License.
         <div id="home" class="tab-pane in active">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h2 class="panel-title">位置情報を取得できます</h2>
+              <h2 class="panel-title">今いる場所をチェックできるよ！</h2>
             </div>
             <div class="panel-body">
               <div class="btn-group">
-                <button @click="geoPosition.getPosition()" class="btn btn-default">Get</button>
-                <button @click="geoPosition.watchPosition(true)" class="btn btn-default">Watch On</button>
-                <button @click="geoPosition.watchPosition(false)" class="btn btn-default">Watch Off</button>
+                <button @click="geoPosition.getPosition()" class="btn btn-primary">チェック</button>
+                <button @click="geoPosition.watchPosition(true)" class="btn btn-default">ウォッチ</button>
+                <button @click="geoPosition.watchPosition(false)" class="btn btn-default">ストップ</button>
               </div>
             </div>
           </div>
@@ -63,7 +63,7 @@ under the License.
         <div id="logs" class="tab-pane">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h2 class="panel-title">取得した位置情報</h2>
+              <h2 class="panel-title">チェックした場所が見れるよ！</h2>
             </div>
             <div class="panel-body">
               <div class="table-responsive">
@@ -81,7 +81,7 @@ under the License.
                       <td>{{ displayDate(x.createdAt) }}<small>{{ displayTime(x.createdAt) }}</small></td>
                       <td>
                         <div class="btn-group">
-                          <button @click="redraw(x.lat, x.lon)" class="btn btn-primary">開く</button>
+                          <button @click="redraw(x)" class="btn btn-primary">開く</button>
                           <button @click="deleteLog(x.index)" class="btn btn-default">消す</button>
                         </div>
                       </td>

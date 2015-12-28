@@ -24,22 +24,28 @@ var appStorage = new AppStorage()
 var vm = new Vue({
     el: '#main',
     data: {
+        message: 'ジオボーイで今いる場所をチェックしよう！',
         logs: appStorage.getLogs(),
         geoPosition: new GeoPosition()
     },
     methods: {
+        displayMessage: function(message: string) {
+            this.message = `${message}<small>(${this.displayTime(new Date().getTime(), withSeconds = true)})</small>`
+        },
         deleteLog: function(index) {
             appStorage.deleteLog(index)
         },
         displayDate: function(datetime: number): string {
             return moment(datetime).format('YYYY/MM/DD')
         },
-        displayTime: function(datetime: number): string {
-            return moment(datetime).format('HH:mm')
+        displayTime: function(datetime: number, withSeconds: boolean = false): string {
+            let format = withSeconds ? 'HH:mm:ss' : 'HH:mm'
+            return moment(datetime).format(format)
         },
-        redraw: function(lat: number, lon: number) {
+        redraw: function(x: Log) {
             $('a[href="#home"]').tab('show')
-            GeoPosition.showPosition(lat, lon)
+            GeoPosition.showPosition(x.lat, x.lon)
+            this.displayMessage(`ログNo.${x.index}のチェックを表示したよ！`)
         }
     }
 })
