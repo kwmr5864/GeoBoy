@@ -156,17 +156,3 @@ var vm = new Vue({
         }
     }
 });
-$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    var tab = e.target;
-    switch (tab.hash) {
-        case '#home':
-            vm.displayMessage('今いる場所をチェックできるよ！');
-            break;
-        case '#logs':
-            vm.displayMessage('チェックしたログが見れるよ！');
-            break;
-        default:
-            vm.displayMessage('タブ切り替えエラー');
-            break;
-    }
-});
