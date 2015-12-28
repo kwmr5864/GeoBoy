@@ -1,10 +1,10 @@
 #home.tab-pane.in.active
     .panel.panel-default
         .panel-heading
-            h2.panel-title 位置情報を取得できます
+            h2.panel-title 今いる場所をチェックできるよ！
         .panel-body
             .btn-group
-                button.btn.btn-default(@click="geoPosition.getPosition()") Get
-                button.btn.btn-default(@click="geoPosition.watchPosition(true)") Watch On
-                button.btn.btn-default(@click="geoPosition.watchPosition(false)") Watch Off
+                button.btn.btn-primary(@click="geoPosition.getPosition()") チェック
+                button.btn.btn-default(@click="geoPosition.watchPosition(true)") ウォッチ
+                button.btn.btn-default(@click="geoPosition.watchPosition(false)") ストップ
     #map
