@@ -18,5 +18,5 @@
                                 small {{ displayTime(x.createdAt) }}
                             td
                                 .btn-group
-                                    button.btn.btn-primary(@click="redraw(x.lat, x.lon)") 開く
+                                    button.btn.btn-primary(@click="redraw(x)") 開く
                                     button.btn.btn-default(@click="deleteLog(x.index)") 消す

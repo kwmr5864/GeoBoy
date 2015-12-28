@@ -24,6 +24,7 @@ var appStorage = new AppStorage()
 var vm = new Vue({
     el: '#main',
     data: {
+        message: 'ジオボーイで今いる場所をチェックしよう！',
         logs: appStorage.getLogs(),
         geoPosition: new GeoPosition()
     },
@@ -37,9 +38,25 @@ var vm = new Vue({
         displayTime: function(datetime: number): string {
             return moment(datetime).format('HH:mm')
         },
-        redraw: function(lat: number, lon: number) {
+        redraw: function(x: Log) {
             $('a[href="#home"]').tab('show')
-            GeoPosition.showPosition(lat, lon)
+            GeoPosition.showPosition(x.lat, x.lon)
+            this.message = `ログNo.${x.index}のチェックを表示したよ！`
         }
+    }
+})
+
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    var tab = e.target
+    switch(tab.hash) {
+    case '#home':
+        vm.message = '今いる場所をチェックできるよ！'
+        break
+    case '#logs':
+        vm.message = 'チェックしたログが見れるよ！'
+        break
+    default:
+        vm.message = 'タブ切り替えエラー'
+        break
     }
 })

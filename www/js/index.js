@@ -81,6 +81,7 @@ var GeoPosition = (function () {
             return;
         }
         if (watchable) {
+            vm.message = '今いる場所をウォッチするよ！';
             this.watchId = this.geolocation.watchPosition(this.successCallback, this.errorCallback, {
                 enableHighAccuracy: true,
                 timeout: 5000,
@@ -89,6 +90,7 @@ var GeoPosition = (function () {
         }
         else {
             this.geolocation.clearWatch(this.watchId);
+            vm.message = 'ウォッチするのを止めたよ！';
         }
     };
     GeoPosition.prototype.successCallback = function (position) {
@@ -97,6 +99,7 @@ var GeoPosition = (function () {
         var index = appStorage.getIndex();
         appStorage.addLog(new Log(index, lat, lon));
         GeoPosition.showPosition(lat, lon);
+        vm.message = '今いる場所をチェックしたよ！';
     };
     GeoPosition.prototype.errorCallback = function (error) {
         alert('お使いのアプリでは位置情報を取得できません');
@@ -127,6 +130,7 @@ var appStorage = new AppStorage();
 var vm = new Vue({
     el: '#main',
     data: {
+        message: 'ジオボーイで今いる場所をチェックしよう！',
         logs: appStorage.getLogs(),
         geoPosition: new GeoPosition()
     },
@@ -140,9 +144,24 @@ var vm = new Vue({
         displayTime: function (datetime) {
             return moment(datetime).format('HH:mm');
         },
-        redraw: function (lat, lon) {
+        redraw: function (x) {
             $('a[href="#home"]').tab('show');
-            GeoPosition.showPosition(lat, lon);
+            GeoPosition.showPosition(x.lat, x.lon);
+            this.message = "\u30ED\u30B0No." + x.index + "\u306E\u30C1\u30A7\u30C3\u30AF\u3092\u8868\u793A\u3057\u305F\u3088\uFF01";
         }
+    }
+});
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    var tab = e.target;
+    switch (tab.hash) {
+        case '#home':
+            vm.message = '今いる場所をチェックできるよ！';
+            break;
+        case '#logs':
+            vm.message = 'チェックしたログが見れるよ！';
+            break;
+        default:
+            vm.message = 'タブ切り替えエラー';
+            break;
     }
 });

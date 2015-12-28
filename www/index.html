@@ -39,7 +39,7 @@ under the License.
   <body>
     <div id="main" class="container">
       <h1>GeoBoy</h1>
-      <p>Cordova and Geolocation API</p>
+      <p>{{ message }}</p>
       <ul class="nav nav-tabs">
         <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
         <li><a href="#logs" data-toggle="tab">Logs</a></li>
@@ -81,7 +81,7 @@ under the License.
                       <td>{{ displayDate(x.createdAt) }}<small>{{ displayTime(x.createdAt) }}</small></td>
                       <td>
                         <div class="btn-group">
-                          <button @click="redraw(x.lat, x.lon)" class="btn btn-primary">開く</button>
+                          <button @click="redraw(x)" class="btn btn-primary">開く</button>
                           <button @click="deleteLog(x.index)" class="btn btn-default">消す</button>
                         </div>
                       </td>
