@@ -29,19 +29,23 @@ var vm = new Vue({
         geoPosition: new GeoPosition()
     },
     methods: {
+        displayMessage: function(message: string) {
+            this.message = `${message}<small>(${this.displayTime(new Date().getTime(), withSeconds = true)})</small>`
+        },
         deleteLog: function(index) {
             appStorage.deleteLog(index)
         },
         displayDate: function(datetime: number): string {
             return moment(datetime).format('YYYY/MM/DD')
         },
-        displayTime: function(datetime: number): string {
-            return moment(datetime).format('HH:mm')
+        displayTime: function(datetime: number, withSeconds: boolean = false): string {
+            let format = withSeconds ? 'HH:mm:ss' : 'HH:mm'
+            return moment(datetime).format(format)
         },
         redraw: function(x: Log) {
             $('a[href="#home"]').tab('show')
             GeoPosition.showPosition(x.lat, x.lon)
-            this.message = `ログNo.${x.index}のチェックを表示したよ！`
+            this.displayMessage(`ログNo.${x.index}のチェックを表示したよ！`)
         }
     }
 })
@@ -50,13 +54,13 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
     var tab = e.target
     switch(tab.hash) {
     case '#home':
-        vm.message = '今いる場所をチェックできるよ！'
+        vm.displayMessage('今いる場所をチェックできるよ！')
         break
     case '#logs':
-        vm.message = 'チェックしたログが見れるよ！'
+        vm.displayMessage('チェックしたログが見れるよ！')
         break
     default:
-        vm.message = 'タブ切り替えエラー'
+        vm.displayMessage('タブ切り替えエラー')
         break
     }
 })

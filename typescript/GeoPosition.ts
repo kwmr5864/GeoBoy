@@ -30,7 +30,7 @@ class GeoPosition {
     watchPosition(watchable: boolean) {
         if (!this.geolocation) { return }
         if (watchable) {
-            vm.message = '今いる場所をウォッチするよ！'
+            vm.displayMessage('今いる場所をウォッチするよ！')
             this.watchId = this.geolocation.watchPosition(this.successCallback, this.errorCallback, {
                 enableHighAccuracy: true,
                 timeout : 5000,
@@ -38,7 +38,7 @@ class GeoPosition {
             })
         } else {
             this.geolocation.clearWatch(this.watchId)
-            vm.message = 'ウォッチするのを止めたよ！'
+            vm.displayMessage('ウォッチするのを止めたよ！')
         }
     }
     private successCallback(position: Position) {
@@ -47,7 +47,7 @@ class GeoPosition {
         let index = appStorage.getIndex()
         appStorage.addLog(new Log(index, lat, lon))
         GeoPosition.showPosition(lat, lon)
-        vm.message = '今いる場所をチェックしたよ！'
+        vm.displayMessage('今いる場所をチェックしたよ！')
     }
     private errorCallback(error) {
         alert('お使いのアプリでは位置情報を取得できません')

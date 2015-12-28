@@ -81,7 +81,7 @@ var GeoPosition = (function () {
             return;
         }
         if (watchable) {
-            vm.message = '今いる場所をウォッチするよ！';
+            vm.displayMessage('今いる場所をウォッチするよ！');
             this.watchId = this.geolocation.watchPosition(this.successCallback, this.errorCallback, {
                 enableHighAccuracy: true,
                 timeout: 5000,
@@ -90,7 +90,7 @@ var GeoPosition = (function () {
         }
         else {
             this.geolocation.clearWatch(this.watchId);
-            vm.message = 'ウォッチするのを止めたよ！';
+            vm.displayMessage('ウォッチするのを止めたよ！');
         }
     };
     GeoPosition.prototype.successCallback = function (position) {
@@ -99,7 +99,7 @@ var GeoPosition = (function () {
         var index = appStorage.getIndex();
         appStorage.addLog(new Log(index, lat, lon));
         GeoPosition.showPosition(lat, lon);
-        vm.message = '今いる場所をチェックしたよ！';
+        vm.displayMessage('今いる場所をチェックしたよ！');
     };
     GeoPosition.prototype.errorCallback = function (error) {
         alert('お使いのアプリでは位置情報を取得できません');
@@ -135,19 +135,24 @@ var vm = new Vue({
         geoPosition: new GeoPosition()
     },
     methods: {
+        displayMessage: function (message) {
+            this.message = message + "<small>(" + this.displayTime(new Date().getTime(), withSeconds = true) + ")</small>";
+        },
         deleteLog: function (index) {
             appStorage.deleteLog(index);
         },
         displayDate: function (datetime) {
             return moment(datetime).format('YYYY/MM/DD');
         },
-        displayTime: function (datetime) {
-            return moment(datetime).format('HH:mm');
+        displayTime: function (datetime, withSeconds) {
+            if (withSeconds === void 0) { withSeconds = false; }
+            var format = withSeconds ? 'HH:mm:ss' : 'HH:mm';
+            return moment(datetime).format(format);
         },
         redraw: function (x) {
             $('a[href="#home"]').tab('show');
             GeoPosition.showPosition(x.lat, x.lon);
-            this.message = "\u30ED\u30B0No." + x.index + "\u306E\u30C1\u30A7\u30C3\u30AF\u3092\u8868\u793A\u3057\u305F\u3088\uFF01";
+            this.displayMessage("\u30ED\u30B0No." + x.index + "\u306E\u30C1\u30A7\u30C3\u30AF\u3092\u8868\u793A\u3057\u305F\u3088\uFF01");
         }
     }
 });
@@ -155,13 +160,13 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
     var tab = e.target;
     switch (tab.hash) {
         case '#home':
-            vm.message = '今いる場所をチェックできるよ！';
+            vm.displayMessage('今いる場所をチェックできるよ！');
             break;
         case '#logs':
-            vm.message = 'チェックしたログが見れるよ！';
+            vm.displayMessage('チェックしたログが見れるよ！');
             break;
         default:
-            vm.message = 'タブ切り替えエラー';
+            vm.displayMessage('タブ切り替えエラー');
             break;
     }
 });

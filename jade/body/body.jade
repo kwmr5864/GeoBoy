@@ -1,6 +1,6 @@
 #main.container
     h1 GeoBoy
-    p {{ message }}
+    p(v-html="message")
     include nav
     .tab-content
         include tabs/home
