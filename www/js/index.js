@@ -155,7 +155,7 @@ var vm = new Vue({
     },
     methods: {
         displayMessage: function (message) {
-            this.message = message + "<small>(" + this.displayTime(new Date().getTime(), withSeconds = true) + ")</small>";
+            this.message = message + "<small>(" + this.displayTime(new Date().getTime(), true) + ")</small>";
         },
         deleteLog: function (index) {
             appStorage.deleteLog(index);

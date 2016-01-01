@@ -1,6 +1,6 @@
 class Log {
 	private createdAt: number
-	constructor(private index: number, private lat: number, private lon: number) {
+	constructor(public index: number, public lat: number, public lon: number) {
 		this.createdAt = new Date().getTime()
 	}
 }
