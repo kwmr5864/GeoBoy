@@ -78,7 +78,10 @@ under the License.
                   <tbody>
                     <tr v-for="x in logs">
                       <td>{{ x.index }}</td>
-                      <td>{{ displayDate(x.createdAt) }}<small>{{ displayTime(x.createdAt) }}</small></td>
+                      <td>
+                        <p>{{ displayDate(x.createdAt) }}<small>{{ displayTime(x.createdAt) }}</small></p>
+                        <p>{{ x.memo }}</p>
+                      </td>
                       <td>
                         <div class="btn-group">
                           <button @click="redraw(x)" class="btn btn-primary">開く</button>

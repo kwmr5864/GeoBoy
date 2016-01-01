@@ -47,7 +47,11 @@ var vm = new Vue({
             var homeTab: any = $('a[href="#home"]')
             homeTab.tab('show')
             GeoPosition.showPosition(x.lat, x.lon)
-            this.displayMessage(`ログNo.${x.index}のチェックを表示したよ！`)
+            if (x.memo) {
+                this.displayMessage(`${x.memo}を表示したよ！`)
+            } else {
+                this.displayMessage(`チェックNo.${x.index}を表示したよ！`)
+            }
         }
     }
 })

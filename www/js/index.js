@@ -174,7 +174,12 @@ var vm = new Vue({
             var homeTab = $('a[href="#home"]');
             homeTab.tab('show');
             GeoPosition.showPosition(x.lat, x.lon);
-            this.displayMessage("\u30ED\u30B0No." + x.index + "\u306E\u30C1\u30A7\u30C3\u30AF\u3092\u8868\u793A\u3057\u305F\u3088\uFF01");
+            if (x.memo) {
+                this.displayMessage(x.memo + "\u3092\u8868\u793A\u3057\u305F\u3088\uFF01");
+            }
+            else {
+                this.displayMessage("\u30C1\u30A7\u30C3\u30AFNo." + x.index + "\u3092\u8868\u793A\u3057\u305F\u3088\uFF01");
+            }
         }
     }
 });
