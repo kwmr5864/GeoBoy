@@ -50,7 +50,8 @@ class GeoPosition {
         GeoPosition.showPosition(lat, lon)
         vm.displayMessage('今いる場所をチェックしたよ！')
         modal.targetIndex = index
-        $('#modal').modal()
+        var targetModal: any = $('#modal')
+        targetModal.modal()
     }
     private errorCallback(error) {
         alert('お使いのアプリでは位置情報を取得できません')

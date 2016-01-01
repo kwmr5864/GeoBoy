@@ -118,7 +118,8 @@ var GeoPosition = (function () {
         GeoPosition.showPosition(lat, lon);
         vm.displayMessage('今いる場所をチェックしたよ！');
         modal.targetIndex = index;
-        $('#modal').modal();
+        var targetModal = $('#modal');
+        targetModal.modal();
     };
     GeoPosition.prototype.errorCallback = function (error) {
         alert('お使いのアプリでは位置情報を取得できません');
@@ -143,6 +144,7 @@ var GeoPosition = (function () {
  * specific language governing permissions and limitations
  * under the License.
  */
+/// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="GeoPosition.ts" />
 /// <reference path="AppStorage.ts" />
 var appStorage = new AppStorage();
@@ -169,7 +171,8 @@ var vm = new Vue({
             return moment(datetime).format(format);
         },
         redraw: function (x) {
-            $('a[href="#home"]').tab('show');
+            var homeTab = $('a[href="#home"]');
+            homeTab.tab('show');
             GeoPosition.showPosition(x.lat, x.lon);
             this.displayMessage("\u30ED\u30B0No." + x.index + "\u306E\u30C1\u30A7\u30C3\u30AF\u3092\u8868\u793A\u3057\u305F\u3088\uFF01");
         }

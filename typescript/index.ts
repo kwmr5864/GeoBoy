@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+/// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="GeoPosition.ts" />
 /// <reference path="AppStorage.ts" />
 
@@ -43,7 +44,8 @@ var vm = new Vue({
             return moment(datetime).format(format)
         },
         redraw: function(x: Log) {
-            $('a[href="#home"]').tab('show')
+            var homeTab: any = $('a[href="#home"]')
+            homeTab.tab('show')
             GeoPosition.showPosition(x.lat, x.lon)
             this.displayMessage(`ログNo.${x.index}のチェックを表示したよ！`)
         }
