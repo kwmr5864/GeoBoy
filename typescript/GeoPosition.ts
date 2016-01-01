@@ -23,6 +23,7 @@ class GeoPosition {
     }
     getPosition() {
         if (!this.geolocation) { return }
+        vm.displayMessage('チェック中・・・')
         this.geolocation.getCurrentPosition(this.successCallback, this.errorCallback, {
             enableHighAccuracy: true
         })
@@ -48,6 +49,9 @@ class GeoPosition {
         appStorage.addLog(new Log(index, lat, lon))
         GeoPosition.showPosition(lat, lon)
         vm.displayMessage('今いる場所をチェックしたよ！')
+        modal.targetIndex = index
+        var targetModal: any = $('#modal')
+        targetModal.modal()
     }
     private errorCallback(error) {
         alert('お使いのアプリでは位置情報を取得できません')

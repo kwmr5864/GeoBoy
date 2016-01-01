@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+/// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="GeoPosition.ts" />
 /// <reference path="AppStorage.ts" />
 
@@ -30,7 +31,7 @@ var vm = new Vue({
     },
     methods: {
         displayMessage: function(message: string) {
-            this.message = `${message}<small>(${this.displayTime(new Date().getTime(), withSeconds = true)})</small>`
+            this.message = `${message}<small>(${this.displayTime(new Date().getTime(), true)})</small>`
         },
         deleteLog: function(index) {
             appStorage.deleteLog(index)
@@ -43,9 +44,27 @@ var vm = new Vue({
             return moment(datetime).format(format)
         },
         redraw: function(x: Log) {
-            $('a[href="#home"]').tab('show')
+            var homeTab: any = $('a[href="#home"]')
+            homeTab.tab('show')
             GeoPosition.showPosition(x.lat, x.lon)
-            this.displayMessage(`ログNo.${x.index}のチェックを表示したよ！`)
+            if (x.memo) {
+                this.displayMessage(`${x.memo}を表示したよ！`)
+            } else {
+                this.displayMessage(`チェックNo.${x.index}を表示したよ！`)
+            }
+        }
+    }
+})
+
+var modal = new Vue({
+    el: '#modal',
+    data: {
+        targetIndex: 0,
+        memo: ''
+    },
+    methods: {
+        addMemo: function() {
+            appStorage.updateLog(this.targetIndex, {memo: this.memo})
         }
     }
 })

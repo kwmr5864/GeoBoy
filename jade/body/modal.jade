@@ -1,0 +1,11 @@
+#modal.modal.fade(tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="false")
+    .modal-dialog
+        .modal-content
+            .modal-header
+                h4.modal-title チェックした場所に名前をつけよう！
+            .modal-body
+                .input-group
+                    .input-group-addon 名前
+                    input.form-control(type="text" placeholder="チェックした場所" v-model="memo")
+            .modal-footer
+                button.btn.btn-primary(type="button" data-dismiss="modal" @click="addMemo()") OK！

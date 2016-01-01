@@ -14,8 +14,9 @@
                         tr(v-for="x in logs")
                             td {{ x.index }}
                             td
-                                {{ displayDate(x.createdAt) }}
-                                small {{ displayTime(x.createdAt) }}
+                                p {{ displayDate(x.createdAt) }}
+                                    small {{ displayTime(x.createdAt) }}
+                                p {{ x.memo }}
                             td
                                 .btn-group
                                     button.btn.btn-primary(@click="redraw(x)") 開く
