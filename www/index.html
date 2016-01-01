@@ -94,6 +94,24 @@ under the License.
         </div>
       </div>
     </div>
+    <div id="modal" tabindex="-1" role="dialog" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">チェックした場所に名前をつけよう！</h4>
+          </div>
+          <div class="modal-body">
+            <div class="input-group">
+              <div class="input-group-addon">名前</div>
+              <input type="text" placeholder="チェックした場所" v-model="memo" class="form-control">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" @click="addMemo()" class="btn btn-primary">OK！</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/jquery-1.11.3.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>

@@ -49,6 +49,8 @@ class GeoPosition {
         appStorage.addLog(new Log(index, lat, lon))
         GeoPosition.showPosition(lat, lon)
         vm.displayMessage('今いる場所をチェックしたよ！')
+        modal.targetIndex = index
+        $('#modal').modal()
     }
     private errorCallback(error) {
         alert('お使いのアプリでは位置情報を取得できません')

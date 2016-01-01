@@ -29,6 +29,22 @@ var AppStorage = (function () {
                 logs.splice(i, 1);
                 this.storage['logs'] = logs;
                 this.save();
+                break;
+            }
+        }
+    };
+    AppStorage.prototype.updateLog = function (index, data) {
+        var logs = this.getLogs();
+        for (var i in logs) {
+            var log = logs[i];
+            if (log.index == index) {
+                for (var k in data) {
+                    log[k] = data[k];
+                }
+                logs[i] = log;
+                this.storage['logs'] = logs;
+                this.save();
+                break;
             }
         }
     };
@@ -101,6 +117,8 @@ var GeoPosition = (function () {
         appStorage.addLog(new Log(index, lat, lon));
         GeoPosition.showPosition(lat, lon);
         vm.displayMessage('今いる場所をチェックしたよ！');
+        modal.targetIndex = index;
+        $('#modal').modal();
     };
     GeoPosition.prototype.errorCallback = function (error) {
         alert('お使いのアプリでは位置情報を取得できません');
@@ -154,6 +172,18 @@ var vm = new Vue({
             $('a[href="#home"]').tab('show');
             GeoPosition.showPosition(x.lat, x.lon);
             this.displayMessage("\u30ED\u30B0No." + x.index + "\u306E\u30C1\u30A7\u30C3\u30AF\u3092\u8868\u793A\u3057\u305F\u3088\uFF01");
+        }
+    }
+});
+var modal = new Vue({
+    el: '#modal',
+    data: {
+        targetIndex: 0,
+        memo: ''
+    },
+    methods: {
+        addMemo: function () {
+            appStorage.updateLog(this.targetIndex, { memo: this.memo });
         }
     }
 });

@@ -49,3 +49,16 @@ var vm = new Vue({
         }
     }
 })
+
+var modal = new Vue({
+    el: '#modal',
+    data: {
+        targetIndex: 0,
+        memo: ''
+    },
+    methods: {
+        addMemo: function() {
+            appStorage.updateLog(this.targetIndex, {memo: this.memo})
+        }
+    }
+})
