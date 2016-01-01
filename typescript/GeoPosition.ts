@@ -23,6 +23,7 @@ class GeoPosition {
     }
     getPosition() {
         if (!this.geolocation) { return }
+        vm.displayMessage('チェック中・・・')
         this.geolocation.getCurrentPosition(this.successCallback, this.errorCallback, {
             enableHighAccuracy: true
         })
