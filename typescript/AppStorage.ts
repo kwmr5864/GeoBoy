@@ -23,6 +23,22 @@ class AppStorage {
 	            logs.splice(i, 1)
 	            this.storage['logs'] = logs
 	            this.save()
+	            break
+	        }
+	    }
+	}
+	updateLog(index: number, data: {[key: string]: any}) {
+	    var logs = this.getLogs()
+	    for(var i in logs) {
+	        var log = logs[i]
+	        if(log.index == index) {
+	            for (var k in data) {
+	                log[k] = data[k]
+	            }
+	            logs[i] = log
+	            this.storage['logs'] = logs
+	            this.save()
+	            break
 	        }
 	    }
 	}
