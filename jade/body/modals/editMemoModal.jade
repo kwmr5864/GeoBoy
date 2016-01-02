@@ -1,4 +1,4 @@
-#modal.modal.fade(tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="false")
+#editMemoModal.modal.fade(tabindex="-1" role="dialog")
     .modal-dialog
         .modal-content
             .modal-header
@@ -8,4 +8,4 @@
                     .input-group-addon 名前
                     input.form-control(type="text" placeholder="チェックした場所" v-model="memo")
             .modal-footer
-                button.btn.btn-primary(type="button" data-dismiss="modal" @click="addMemo()") OK！
+                button.btn.btn-primary(type="button" data-dismiss="modal" @click="updateMemo()") OK！

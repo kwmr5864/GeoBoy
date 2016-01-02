@@ -78,7 +78,7 @@ under the License.
                   <tbody>
                     <tr v-for="x in logs">
                       <td>{{ x.index }}</td>
-                      <td>
+                      <td @click="openEditForm(x)">
                         <p>{{ displayDate(x.createdAt) }}<small>{{ displayTime(x.createdAt) }}</small></p>
                         <p>{{ x.memo }}</p>
                       </td>
@@ -97,7 +97,7 @@ under the License.
         </div>
       </div>
     </div>
-    <div id="modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="false" class="modal fade">
+    <div id="addMemoModal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="false" class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -111,6 +111,24 @@ under the License.
           </div>
           <div class="modal-footer">
             <button type="button" data-dismiss="modal" @click="addMemo()" class="btn btn-primary">OK！</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="editMemoModal" tabindex="-1" role="dialog" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">チェックした場所に名前をつけよう！</h4>
+          </div>
+          <div class="modal-body">
+            <div class="input-group">
+              <div class="input-group-addon">名前</div>
+              <input type="text" placeholder="チェックした場所" v-model="memo" class="form-control">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" @click="updateMemo()" class="btn btn-primary">OK！</button>
           </div>
         </div>
       </div>
