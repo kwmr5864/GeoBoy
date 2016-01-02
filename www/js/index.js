@@ -4,6 +4,7 @@ var Log = (function () {
         this.lat = lat;
         this.lon = lon;
         this.createdAt = new Date().getTime();
+        this.memo = '';
     }
     return Log;
 })();
@@ -42,6 +43,7 @@ var AppStorage = (function () {
                     log[k] = data[k];
                 }
                 logs[i] = log;
+                logs.push();
                 this.storage['logs'] = logs;
                 this.save();
                 break;

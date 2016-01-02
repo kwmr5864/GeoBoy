@@ -36,6 +36,7 @@ class AppStorage {
 	                log[k] = data[k]
 	            }
 	            logs[i] = log
+	            logs.push()
 	            this.storage['logs'] = logs
 	            this.save()
 	            break
