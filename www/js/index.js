@@ -117,8 +117,8 @@ var GeoPosition = (function () {
         appStorage.addLog(new Log(index, lat, lon));
         GeoPosition.showPosition(lat, lon);
         vm.displayMessage('今いる場所をチェックしたよ！');
-        modal.targetIndex = index;
-        var targetModal = $('#modal');
+        vmAddMemoModal.targetIndex = index;
+        var targetModal = $('#addMemoModal');
         targetModal.modal();
     };
     GeoPosition.prototype.errorCallback = function (error) {
@@ -148,6 +148,30 @@ var GeoPosition = (function () {
 /// <reference path="GeoPosition.ts" />
 /// <reference path="AppStorage.ts" />
 var appStorage = new AppStorage();
+var vmAddMemoModal = new Vue({
+    el: '#addMemoModal',
+    data: {
+        targetIndex: 0,
+        memo: ''
+    },
+    methods: {
+        addMemo: function () {
+            appStorage.updateLog(this.targetIndex, { memo: this.memo });
+        }
+    }
+});
+var vmEditMemoModal = new Vue({
+    el: '#editMemoModal',
+    data: {
+        targetIndex: 0,
+        memo: ''
+    },
+    methods: {
+        updateMemo: function () {
+            appStorage.updateLog(this.targetIndex, { memo: this.memo });
+        }
+    }
+});
 var vm = new Vue({
     el: '#main',
     data: {
@@ -180,18 +204,12 @@ var vm = new Vue({
             else {
                 this.displayMessage("\u30C1\u30A7\u30C3\u30AFNo." + x.index + "\u3092\u8868\u793A\u3057\u305F\u3088\uFF01");
             }
-        }
-    }
-});
-var modal = new Vue({
-    el: '#modal',
-    data: {
-        targetIndex: 0,
-        memo: ''
-    },
-    methods: {
-        addMemo: function () {
-            appStorage.updateLog(this.targetIndex, { memo: this.memo });
+        },
+        openEditForm: function (x) {
+            vmEditMemoModal.targetIndex = x.index;
+            vmEditMemoModal.memo = x.memo;
+            var targetModal = $('#editMemoModal');
+            targetModal.modal();
         }
     }
 });
