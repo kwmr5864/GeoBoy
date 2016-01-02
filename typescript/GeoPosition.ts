@@ -49,8 +49,8 @@ class GeoPosition {
         appStorage.addLog(new Log(index, lat, lon))
         GeoPosition.showPosition(lat, lon)
         vm.displayMessage('今いる場所をチェックしたよ！')
-        modal.targetIndex = index
-        var targetModal: any = $('#modal')
+        vmAddMemoModal.targetIndex = index
+        var targetModal: any = $('#addMemoModal')
         targetModal.modal()
     }
     private errorCallback(error) {

@@ -22,6 +22,32 @@
 
 var appStorage = new AppStorage()
 
+var vmAddMemoModal = new Vue({
+    el: '#addMemoModal',
+    data: {
+        targetIndex: 0,
+        memo: ''
+    },
+    methods: {
+        addMemo: function() {
+            appStorage.updateLog(this.targetIndex, {memo: this.memo})
+        }
+    }
+})
+
+var vmEditMemoModal = new Vue({
+    el: '#editMemoModal',
+    data: {
+        targetIndex: 0,
+        memo: ''
+    },
+    methods: {
+        updateMemo: function() {
+            appStorage.updateLog(this.targetIndex, {memo: this.memo})
+        }
+    }
+})
+
 var vm = new Vue({
     el: '#main',
     data: {
@@ -52,19 +78,12 @@ var vm = new Vue({
             } else {
                 this.displayMessage(`チェックNo.${x.index}を表示したよ！`)
             }
-        }
-    }
-})
-
-var modal = new Vue({
-    el: '#modal',
-    data: {
-        targetIndex: 0,
-        memo: ''
-    },
-    methods: {
-        addMemo: function() {
-            appStorage.updateLog(this.targetIndex, {memo: this.memo})
+        },
+        openEditForm: function(x: Log) {
+            vmEditMemoModal.targetIndex = x.index
+            vmEditMemoModal.memo = x.memo
+            var targetModal: any = $('#editMemoModal')
+            targetModal.modal()
         }
     }
 })
