@@ -2,10 +2,19 @@
     .modal-dialog
         .modal-content
             .modal-header
+                button.close(type="button" data-dismiss="modal")
+                    span(aria-hidden="true") &times;
                 h4.modal-title チェックした場所に名前をつけよう！
             .modal-body
                 .input-group
                     .input-group-addon 名前
                     input.form-control(type="text" placeholder="チェックした場所" v-model="memo")
+                .input-group
+                    .input-group-addon ズーム
+                    select.form-control(v-model="zoom")
+                        - for (var i = 1; i < 22; i++) {
+                            option(value="#{i}") #{i}
+                        - }
             .modal-footer
+                button.btn.btn-default(type="button" data-dismiss="modal") 戻る
                 button.btn.btn-primary(type="button" data-dismiss="modal" @click="updateMemo()") OK！

@@ -1,8 +1,9 @@
 var Log = (function () {
-    function Log(index, lat, lon) {
+    function Log(index, lat, lon, zoom) {
         this.index = index;
         this.lat = lat;
         this.lon = lon;
+        this.zoom = zoom;
         this.createdAt = new Date().getTime();
         this.memo = '';
     }
@@ -50,11 +51,28 @@ var AppStorage = (function () {
             }
         }
     };
+    AppStorage.prototype.updateDefaults = function (data) {
+        var defaults = {};
+        for (var k in data) {
+            defaults[k] = data[k];
+        }
+        this.storage['defaults'] = defaults;
+        this.save();
+    };
     AppStorage.prototype.getLogs = function () {
         return this.get('logs');
     };
     AppStorage.prototype.getIndex = function () {
         return this.get('index');
+    };
+    AppStorage.prototype.getDefaultZoom = function () {
+        var defaults = this.getDefaults();
+        var zoom = defaults['zoom'];
+        return zoom ? zoom : 14;
+    };
+    AppStorage.prototype.getDefaults = function () {
+        var defaults = this.get('defaults');
+        return defaults ? defaults : {};
     };
     AppStorage.prototype.get = function (name) {
         return this.storage[name];
@@ -73,10 +91,10 @@ var GeoPosition = (function () {
             this.geolocation = navigator.geolocation;
         }
     }
-    GeoPosition.showPosition = function (lat, lon) {
-        var position = new google.maps.LatLng(lat, lon);
+    GeoPosition.showPosition = function (log) {
+        var position = new google.maps.LatLng(log.lat, log.lon);
         var map = new google.maps.Map($('#map')[0], {
-            zoom: 14,
+            zoom: log.zoom ? log.zoom : appStorage.getDefaultZoom(),
             center: position,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             scaleControl: true
@@ -116,8 +134,10 @@ var GeoPosition = (function () {
         var lat = position.coords.latitude;
         var lon = position.coords.longitude;
         var index = appStorage.getIndex();
-        appStorage.addLog(new Log(index, lat, lon));
-        GeoPosition.showPosition(lat, lon);
+        var zoom = appStorage.getDefaultZoom();
+        var log = new Log(index, lat, lon, zoom);
+        appStorage.addLog(log);
+        GeoPosition.showPosition(log);
         vm.displayMessage('今いる場所をチェックしたよ！');
         vmAddMemoModal.targetIndex = index;
         var targetModal = $('#addMemoModal');
@@ -166,11 +186,28 @@ var vmEditMemoModal = new Vue({
     el: '#editMemoModal',
     data: {
         targetIndex: 0,
-        memo: ''
+        memo: '',
+        zoom: '11'
     },
     methods: {
         updateMemo: function () {
-            appStorage.updateLog(this.targetIndex, { memo: this.memo });
+            appStorage.updateLog(this.targetIndex, {
+                memo: this.memo,
+                zoom: +this.zoom
+            });
+        }
+    }
+});
+var vmSettings = new Vue({
+    el: '#settings',
+    data: {
+        zoom: appStorage.getDefaultZoom()
+    },
+    methods: {
+        settingZoom: function () {
+            appStorage.updateDefaults({
+                zoom: +this.zoom
+            });
         }
     }
 });
@@ -179,7 +216,8 @@ var vm = new Vue({
     data: {
         message: 'ジオボーイで今いる場所をチェックしよう！',
         logs: appStorage.getLogs(),
-        geoPosition: new GeoPosition()
+        geoPosition: new GeoPosition(),
+        defaultZoom: appStorage.getDefaultZoom()
     },
     methods: {
         displayMessage: function (message) {
@@ -196,20 +234,20 @@ var vm = new Vue({
             var format = withSeconds ? 'HH:mm:ss' : 'HH:mm';
             return moment(datetime).format(format);
         },
+        displayZoom: function (zoom) {
+            return zoom ? "[\u30BA\u30FC\u30E0: " + zoom + "]" : '';
+        },
         redraw: function (x) {
             var homeTab = $('a[href="#home"]');
             homeTab.tab('show');
-            GeoPosition.showPosition(x.lat, x.lon);
-            if (x.memo) {
-                this.displayMessage(x.memo + "\u3092\u8868\u793A\u3057\u305F\u3088\uFF01");
-            }
-            else {
-                this.displayMessage("\u30C1\u30A7\u30C3\u30AFNo." + x.index + "\u3092\u8868\u793A\u3057\u305F\u3088\uFF01");
-            }
+            GeoPosition.showPosition(x);
+            var message = x.memo ? x.memo : "\u30C1\u30A7\u30C3\u30AFNo." + x.index;
+            this.displayMessage(message + "\u3092\u8868\u793A\u3057\u305F\u3088\uFF01 <small>" + this.displayZoom(x.zoom) + "</small> ");
         },
         openEditForm: function (x) {
             vmEditMemoModal.targetIndex = x.index;
             vmEditMemoModal.memo = x.memo;
+            vmEditMemoModal.zoom = x.zoom;
             var targetModal = $('#editMemoModal');
             targetModal.modal();
         }
