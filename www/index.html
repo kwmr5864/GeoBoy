@@ -49,7 +49,7 @@ under the License.
         <div id="home" class="tab-pane in active">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h2 class="panel-title">今いる場所をチェックできるよ！</h2>
+              <h2 class="panel-title">今いる場所をチェックできるよ！<small>{{ displayZoom(defaultZoom) }}</small></h2>
             </div>
             <div class="panel-body">
               <div class="btn-group">
@@ -80,7 +80,7 @@ under the License.
                     <tr v-for="x in logs">
                       <td>{{ x.index }}</td>
                       <td @click="openEditForm(x)">
-                        <p>{{ displayDate(x.createdAt) }}<small>{{ displayTime(x.createdAt) }}</small></p>
+                        <p>{{ displayDate(x.createdAt) }}<small>{{ displayZoom(x.zoom) }} {{ displayTime(x.createdAt) }}</small></p>
                         <p>{{ x.memo }}</p>
                       </td>
                       <td>

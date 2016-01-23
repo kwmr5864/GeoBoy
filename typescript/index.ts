@@ -71,7 +71,8 @@ var vm = new Vue({
     data: {
         message: 'ジオボーイで今いる場所をチェックしよう！',
         logs: appStorage.getLogs(),
-        geoPosition: new GeoPosition()
+        geoPosition: new GeoPosition(),
+        defaultZoom: appStorage.getDefaultZoom()
     },
     methods: {
         displayMessage: function(message: string) {
@@ -87,15 +88,15 @@ var vm = new Vue({
             let format = withSeconds ? 'HH:mm:ss' : 'HH:mm'
             return moment(datetime).format(format)
         },
+        displayZoom: function(zoom: any) {
+            return zoom ? `[ズーム: ${zoom}]` : ''
+        },
         redraw: function(x: Log) {
             var homeTab: any = $('a[href="#home"]')
             homeTab.tab('show')
             GeoPosition.showPosition(x)
-            if (x.memo) {
-                this.displayMessage(`${x.memo}を表示したよ！`)
-            } else {
-                this.displayMessage(`チェックNo.${x.index}を表示したよ！`)
-            }
+            let message = x.memo ? x.memo : `チェックNo.${x.index}`
+            this.displayMessage(`${message}を表示したよ！ <small>${this.displayZoom(x.zoom)}</small> `)
         },
         openEditForm: function(x: Log) {
             vmEditMemoModal.targetIndex = x.index

@@ -15,7 +15,7 @@
                             td {{ x.index }}
                             td(@click="openEditForm(x)")
                                 p {{ displayDate(x.createdAt) }}
-                                    small {{ displayTime(x.createdAt) }}
+                                    small {{ displayZoom(x.zoom) }} {{ displayTime(x.createdAt) }}
                                 p {{ x.memo }}
                             td
                                 .btn-group

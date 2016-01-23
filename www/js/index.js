@@ -216,7 +216,8 @@ var vm = new Vue({
     data: {
         message: 'ジオボーイで今いる場所をチェックしよう！',
         logs: appStorage.getLogs(),
-        geoPosition: new GeoPosition()
+        geoPosition: new GeoPosition(),
+        defaultZoom: appStorage.getDefaultZoom()
     },
     methods: {
         displayMessage: function (message) {
@@ -233,16 +234,15 @@ var vm = new Vue({
             var format = withSeconds ? 'HH:mm:ss' : 'HH:mm';
             return moment(datetime).format(format);
         },
+        displayZoom: function (zoom) {
+            return zoom ? "[\u30BA\u30FC\u30E0: " + zoom + "]" : '';
+        },
         redraw: function (x) {
             var homeTab = $('a[href="#home"]');
             homeTab.tab('show');
             GeoPosition.showPosition(x);
-            if (x.memo) {
-                this.displayMessage(x.memo + "\u3092\u8868\u793A\u3057\u305F\u3088\uFF01");
-            }
-            else {
-                this.displayMessage("\u30C1\u30A7\u30C3\u30AFNo." + x.index + "\u3092\u8868\u793A\u3057\u305F\u3088\uFF01");
-            }
+            var message = x.memo ? x.memo : "\u30C1\u30A7\u30C3\u30AFNo." + x.index;
+            this.displayMessage(message + "\u3092\u8868\u793A\u3057\u305F\u3088\uFF01 <small>" + this.displayZoom(x.zoom) + "</small> ");
         },
         openEditForm: function (x) {
             vmEditMemoModal.targetIndex = x.index;
