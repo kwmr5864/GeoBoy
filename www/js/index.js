@@ -73,10 +73,11 @@ var GeoPosition = (function () {
             this.geolocation = navigator.geolocation;
         }
     }
-    GeoPosition.showPosition = function (lat, lon) {
+    GeoPosition.showPosition = function (lat, lon, zoom) {
+        if (zoom === void 0) { zoom = 14; }
         var position = new google.maps.LatLng(lat, lon);
         var map = new google.maps.Map($('#map')[0], {
-            zoom: 14,
+            zoom: zoom,
             center: position,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             scaleControl: true
@@ -173,7 +174,7 @@ var vmEditMemoModal = new Vue({
         updateMemo: function () {
             appStorage.updateLog(this.targetIndex, {
                 memo: this.memo,
-                zoom: this.zoom
+                zoom: +this.zoom
             });
         }
     }
@@ -203,7 +204,7 @@ var vm = new Vue({
         redraw: function (x) {
             var homeTab = $('a[href="#home"]');
             homeTab.tab('show');
-            GeoPosition.showPosition(x.lat, x.lon);
+            GeoPosition.showPosition(x.lat, x.lon, x.zoom);
             if (x.memo) {
                 this.displayMessage(x.memo + "\u3092\u8868\u793A\u3057\u305F\u3088\uFF01");
             }
@@ -214,6 +215,7 @@ var vm = new Vue({
         openEditForm: function (x) {
             vmEditMemoModal.targetIndex = x.index;
             vmEditMemoModal.memo = x.memo;
+            vmEditMemoModal.zoom = x.zoom;
             var targetModal = $('#editMemoModal');
             targetModal.modal();
         }

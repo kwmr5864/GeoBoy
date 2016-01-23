@@ -2,10 +2,10 @@ class GeoPosition {
     private geolocation: Geolocation = null
     private watchId: number = null
 
-    static showPosition(lat: number, lon: number) {
+    static showPosition(lat: number, lon: number, zoom: number = 14) {
         var position = new google.maps.LatLng(lat, lon)
         var map = new google.maps.Map($('#map')[0], {
-            zoom: 14,
+            zoom: zoom,
             center: position,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             scaleControl: true
