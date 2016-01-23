@@ -28,3 +28,11 @@
 #logs small {
     margin: 0 0 0 5px;
 }
+
+.modal-body .input-group {
+    margin: 0 0 10px 0;
+}
+
+.modal-body .input-group .input-group-addon:first-child {
+    min-width: 70px;
+}
