@@ -2,10 +2,10 @@ class GeoPosition {
     private geolocation: Geolocation = null
     private watchId: number = null
 
-    static showPosition(lat: number, lon: number) {
-        var position = new google.maps.LatLng(lat, lon)
+    static showPosition(log: Log) {
+        var position = new google.maps.LatLng(log.lat, log.lon)
         var map = new google.maps.Map($('#map')[0], {
-            zoom: 14,
+            zoom: log.zoom ? log.zoom : appStorage.getDefaultZoom(),
             center: position,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             scaleControl: true
@@ -46,8 +46,10 @@ class GeoPosition {
         let lat = position.coords.latitude
         let lon = position.coords.longitude
         let index = appStorage.getIndex()
-        appStorage.addLog(new Log(index, lat, lon))
-        GeoPosition.showPosition(lat, lon)
+        let zoom = appStorage.getDefaultZoom()
+        let log = new Log(index, lat, lon, zoom)
+        appStorage.addLog(log)
+        GeoPosition.showPosition(log)
         vm.displayMessage('今いる場所をチェックしたよ！')
         vmAddMemoModal.targetIndex = index
         var targetModal: any = $('#addMemoModal')
