@@ -43,11 +43,28 @@ class AppStorage {
 	        }
 	    }
 	}
+	updateDefaults(data: {[key: string]: any}) {
+	    var defaults = {}
+	    for (var k in data) {
+	        defaults[k] = data[k]
+	    }
+	    this.storage['defaults'] = defaults
+	    this.save()
+	}
 	getLogs(): [Log] {
 		return this.get('logs')
 	}
 	getIndex(): number {
 	    return this.get('index')
+	}
+	getDefaultZoom(): number {
+	    var defaults = this.getDefaults()
+	    var zoom = defaults['zoom']
+	    return zoom ? zoom : 14
+	}
+	private getDefaults(): {[key: string]: any} {
+	    var defaults = this.get('defaults')
+	    return defaults ? defaults : {}
 	}
 	private get(name: string): string {
 	    return this.storage[name]

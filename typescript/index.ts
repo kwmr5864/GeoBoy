@@ -52,6 +52,20 @@ var vmEditMemoModal = new Vue({
     }
 })
 
+var vmSettings = new Vue({
+    el: '#settings',
+    data: {
+        zoom: appStorage.getDefaultZoom(),
+    },
+    methods: {
+        settingZoom: function() {
+            appStorage.updateDefaults({
+                zoom: +this.zoom
+            })
+        }
+    }
+})
+
 var vm = new Vue({
     el: '#main',
     data: {
@@ -76,7 +90,7 @@ var vm = new Vue({
         redraw: function(x: Log) {
             var homeTab: any = $('a[href="#home"]')
             homeTab.tab('show')
-            GeoPosition.showPosition(x.lat, x.lon, x.zoom)
+            GeoPosition.showPosition(x)
             if (x.memo) {
                 this.displayMessage(`${x.memo}を表示したよ！`)
             } else {

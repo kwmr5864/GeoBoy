@@ -1,8 +1,9 @@
 var Log = (function () {
-    function Log(index, lat, lon) {
+    function Log(index, lat, lon, zoom) {
         this.index = index;
         this.lat = lat;
         this.lon = lon;
+        this.zoom = zoom;
         this.createdAt = new Date().getTime();
         this.memo = '';
     }
@@ -50,11 +51,28 @@ var AppStorage = (function () {
             }
         }
     };
+    AppStorage.prototype.updateDefaults = function (data) {
+        var defaults = {};
+        for (var k in data) {
+            defaults[k] = data[k];
+        }
+        this.storage['defaults'] = defaults;
+        this.save();
+    };
     AppStorage.prototype.getLogs = function () {
         return this.get('logs');
     };
     AppStorage.prototype.getIndex = function () {
         return this.get('index');
+    };
+    AppStorage.prototype.getDefaultZoom = function () {
+        var defaults = this.getDefaults();
+        var zoom = defaults['zoom'];
+        return zoom ? zoom : 14;
+    };
+    AppStorage.prototype.getDefaults = function () {
+        var defaults = this.get('defaults');
+        return defaults ? defaults : {};
     };
     AppStorage.prototype.get = function (name) {
         return this.storage[name];
@@ -73,11 +91,10 @@ var GeoPosition = (function () {
             this.geolocation = navigator.geolocation;
         }
     }
-    GeoPosition.showPosition = function (lat, lon, zoom) {
-        if (zoom === void 0) { zoom = 14; }
-        var position = new google.maps.LatLng(lat, lon);
+    GeoPosition.showPosition = function (log) {
+        var position = new google.maps.LatLng(log.lat, log.lon);
         var map = new google.maps.Map($('#map')[0], {
-            zoom: zoom,
+            zoom: log.zoom ? log.zoom : appStorage.getDefaultZoom(),
             center: position,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             scaleControl: true
@@ -117,8 +134,10 @@ var GeoPosition = (function () {
         var lat = position.coords.latitude;
         var lon = position.coords.longitude;
         var index = appStorage.getIndex();
-        appStorage.addLog(new Log(index, lat, lon));
-        GeoPosition.showPosition(lat, lon);
+        var zoom = appStorage.getDefaultZoom();
+        var log = new Log(index, lat, lon, zoom);
+        appStorage.addLog(log);
+        GeoPosition.showPosition(log);
         vm.displayMessage('今いる場所をチェックしたよ！');
         vmAddMemoModal.targetIndex = index;
         var targetModal = $('#addMemoModal');
@@ -179,6 +198,19 @@ var vmEditMemoModal = new Vue({
         }
     }
 });
+var vmSettings = new Vue({
+    el: '#settings',
+    data: {
+        zoom: appStorage.getDefaultZoom()
+    },
+    methods: {
+        settingZoom: function () {
+            appStorage.updateDefaults({
+                zoom: +this.zoom
+            });
+        }
+    }
+});
 var vm = new Vue({
     el: '#main',
     data: {
@@ -204,7 +236,7 @@ var vm = new Vue({
         redraw: function (x) {
             var homeTab = $('a[href="#home"]');
             homeTab.tab('show');
-            GeoPosition.showPosition(x.lat, x.lon, x.zoom);
+            GeoPosition.showPosition(x);
             if (x.memo) {
                 this.displayMessage(x.memo + "\u3092\u8868\u793A\u3057\u305F\u3088\uFF01");
             }
