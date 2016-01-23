@@ -11,7 +11,7 @@
                     input.form-control(type="text" placeholder="チェックした場所" v-model="memo")
                 .input-group
                     .input-group-addon ズーム
-                    select.form-control
+                    select.form-control(v-model="zoom")
                         - for (var i = 1; i < 22; i++) {
                             option(value="#{i}") #{i}
                         - }

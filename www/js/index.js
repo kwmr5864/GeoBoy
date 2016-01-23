@@ -166,11 +166,15 @@ var vmEditMemoModal = new Vue({
     el: '#editMemoModal',
     data: {
         targetIndex: 0,
-        memo: ''
+        memo: '',
+        zoom: '11'
     },
     methods: {
         updateMemo: function () {
-            appStorage.updateLog(this.targetIndex, { memo: this.memo });
+            appStorage.updateLog(this.targetIndex, {
+                memo: this.memo,
+                zoom: this.zoom
+            });
         }
     }
 });
