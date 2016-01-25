@@ -29,6 +29,10 @@
     margin: 0 0 0 5px;
 }
 
+#tags .list-group {
+    margin: 15px 0 0 0;
+}
+
 .modal-body .input-group {
     margin: 0 0 10px 0;
 }

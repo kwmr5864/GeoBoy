@@ -211,6 +211,18 @@ var vmSettings = new Vue({
         }
     }
 });
+var vmTags = new Vue({
+    el: '#tags',
+    data: {
+        tag: '',
+        tags: []
+    },
+    methods: {
+        addTag: function () {
+            this.tags.unshift(this.tag);
+        }
+    }
+});
 var vm = new Vue({
     el: '#main',
     data: {

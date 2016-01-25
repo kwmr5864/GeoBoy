@@ -140,9 +140,12 @@ under the License.
             <div class="panel-body">
               <div class="input-group">
                 <div class="input-group-addon">タグ名</div>
-                <input type="text" class="form-control"><span class="input-group-btn">
-                  <button type="button" class="btn btn-primary">追加</button></span>
+                <input type="text" v-model="tag" class="form-control"><span class="input-group-btn">
+                  <button type="button" @click="addTag()" class="btn btn-primary">追加</button></span>
               </div>
+              <ul class="list-group">
+                <li v-for="x in tags" class="list-group-item"><span class="badge"></span>{{ x }}</li>
+              </ul>
             </div>
           </div>
         </div>

@@ -5,6 +5,10 @@
         .panel-body
             .input-group
                 .input-group-addon タグ名
-                input.form-control(type="text")
+                input.form-control(type="text" v-model="tag")
                 span.input-group-btn
-                    button.btn.btn-primary(type="button") 追加
+                    button.btn.btn-primary(type="button" @click="addTag()") 追加
+            ul.list-group
+                li.list-group-item(v-for="x in tags")
+                    span.badge
+                    {{ x }}
