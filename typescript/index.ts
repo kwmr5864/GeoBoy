@@ -69,9 +69,9 @@ var vmSettings = new Vue({
 var vmTags = new Vue({
     el: '#tags',
     data: {
-        index: 1,
+        index: appStorage.getTagIndex(),
         tag: '',
-        tags: []
+        tags: appStorage.getTags()
     },
     methods: {
         addTag: function() {
@@ -80,12 +80,14 @@ var vmTags = new Vue({
                 name: this.tag
             })
             this.index++
+            appStorage.saveTags(this.tags, this.index)
         },
         deleteTag: function(id: number) {
             for (var i in this.tags) {
                 var tag = this.tags[i]
                 if (tag['id'] == id) {
                     this.tags.splice(i, 1)
+                    appStorage.saveTags(this.tags, this.index)
                     break
                 }
             }

@@ -17,6 +17,10 @@ var AppStorage = (function () {
             index: 1,
             logs: []
         };
+        if (this.storage['tagIndex'] == null || this.storage['tags'] == null) {
+            this.storage['tagIndex'] = 1;
+            this.storage['tags'] = [];
+        }
     }
     AppStorage.prototype.addLog = function (log) {
         this.storage['logs'].push(log);
@@ -59,11 +63,22 @@ var AppStorage = (function () {
         this.storage['defaults'] = defaults;
         this.save();
     };
+    AppStorage.prototype.saveTags = function (tags, index) {
+        this.storage['tags'] = tags;
+        this.storage['tagIndex'] = index;
+        this.save();
+    };
     AppStorage.prototype.getLogs = function () {
         return this.get('logs');
     };
     AppStorage.prototype.getIndex = function () {
         return this.get('index');
+    };
+    AppStorage.prototype.getTags = function () {
+        return this.get('tags');
+    };
+    AppStorage.prototype.getTagIndex = function () {
+        return this.get('tagIndex');
     };
     AppStorage.prototype.getDefaultZoom = function () {
         var defaults = this.getDefaults();
@@ -214,9 +229,9 @@ var vmSettings = new Vue({
 var vmTags = new Vue({
     el: '#tags',
     data: {
-        index: 1,
+        index: appStorage.getTagIndex(),
         tag: '',
-        tags: []
+        tags: appStorage.getTags()
     },
     methods: {
         addTag: function () {
@@ -225,12 +240,14 @@ var vmTags = new Vue({
                 name: this.tag
             });
             this.index++;
+            appStorage.saveTags(this.tags, this.index);
         },
         deleteTag: function (id) {
             for (var i in this.tags) {
                 var tag = this.tags[i];
                 if (tag['id'] == id) {
                     this.tags.splice(i, 1);
+                    appStorage.saveTags(this.tags, this.index);
                     break;
                 }
             }
