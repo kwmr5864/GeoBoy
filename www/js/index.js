@@ -1,9 +1,11 @@
 var Log = (function () {
-    function Log(index, lat, lon, zoom) {
+    function Log(index, lat, lon, zoom, tags) {
+        if (tags === void 0) { tags = []; }
         this.index = index;
         this.lat = lat;
         this.lon = lon;
         this.zoom = zoom;
+        this.tags = tags;
         this.createdAt = new Date().getTime();
         this.memo = '';
     }
@@ -203,13 +205,15 @@ var vmEditMemoModal = new Vue({
         targetIndex: 0,
         memo: '',
         zoom: '11',
-        tags: appStorage.getTags()
+        tags: appStorage.getTags(),
+        checkedTags: []
     },
     methods: {
-        updateMemo: function () {
+        update: function () {
             appStorage.updateLog(this.targetIndex, {
                 memo: this.memo,
-                zoom: +this.zoom
+                zoom: +this.zoom,
+                tags: this.checkedTags
             });
         }
     }
@@ -292,6 +296,7 @@ var vm = new Vue({
             vmEditMemoModal.targetIndex = x.index;
             vmEditMemoModal.memo = x.memo;
             vmEditMemoModal.zoom = x.zoom;
+            vmEditMemoModal.checkedTags = x.tags ? x.tags : [];
             var targetModal = $('#editMemoModal');
             targetModal.modal();
         }

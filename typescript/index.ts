@@ -42,12 +42,14 @@ var vmEditMemoModal = new Vue({
         memo: '',
         zoom: '11',
         tags: appStorage.getTags(),
+        checkedTags: [],
     },
     methods: {
-        updateMemo: function() {
+        update: function() {
             appStorage.updateLog(this.targetIndex, {
                 memo: this.memo,
-                zoom: +this.zoom
+                zoom: +this.zoom,
+                tags: this.checkedTags,
             })
         }
     }
@@ -132,6 +134,7 @@ var vm = new Vue({
             vmEditMemoModal.targetIndex = x.index
             vmEditMemoModal.memo = x.memo
             vmEditMemoModal.zoom = x.zoom
+            vmEditMemoModal.checkedTags = x.tags ? x.tags : []
             var targetModal: any = $('#editMemoModal')
             targetModal.modal()
         }

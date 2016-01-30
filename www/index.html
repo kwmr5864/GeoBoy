@@ -212,14 +212,14 @@ under the License.
             <ul class="list-inline">
               <li v-for="x in tags">
                 <label class="checkbox-inline">
-                  <input type="checkbox" id="tag{{ x.id }}" value="{{ x.id }}" class="tag"><span class="label label-default">{{ x.name }}</span>
+                  <input type="checkbox" id="tag{{ x.id }}" value="{{ x.id }}" v-model="checkedTags" class="tag"><span class="label label-default">{{ x.name }}</span>
                 </label>
               </li>
             </ul>
           </div>
           <div class="modal-footer">
             <button type="button" data-dismiss="modal" class="btn btn-default">戻る</button>
-            <button type="button" data-dismiss="modal" @click="updateMemo()" class="btn btn-primary">OK！</button>
+            <button type="button" data-dismiss="modal" @click="update()" class="btn btn-primary">OK！</button>
           </div>
         </div>
       </div>
