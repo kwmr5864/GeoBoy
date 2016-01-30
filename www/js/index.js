@@ -259,12 +259,28 @@ var vmTags = new Vue({
         }
     }
 });
+var vmHome = new Vue({
+    el: '#home',
+    data: {
+        geoPosition: new GeoPosition()
+    },
+    methods: {
+        check: function () {
+            this.geoPosition.getPosition();
+        },
+        watch: function () {
+            this.geoPosition.watchPosition(true);
+        },
+        stop: function () {
+            this.geoPosition.watchPosition(false);
+        }
+    }
+});
 var vm = new Vue({
     el: '#main',
     data: {
         message: 'ジオボーイで今いる場所をチェックしよう！',
         logs: appStorage.getLogs(),
-        geoPosition: new GeoPosition(),
         defaultZoom: appStorage.getDefaultZoom()
     },
     methods: {

@@ -54,9 +54,9 @@ under the License.
             </div>
             <div class="panel-body">
               <div class="btn-group">
-                <button @click="geoPosition.getPosition()" class="btn btn-primary">チェック</button>
-                <button @click="geoPosition.watchPosition(true)" class="btn btn-default">ウォッチ</button>
-                <button @click="geoPosition.watchPosition(false)" class="btn btn-default">ストップ</button>
+                <button @click="check()" class="btn btn-primary">チェック</button>
+                <button @click="watch()" class="btn btn-default">ウォッチ</button>
+                <button @click="stop()" class="btn btn-default">ストップ</button>
               </div>
             </div>
           </div>
