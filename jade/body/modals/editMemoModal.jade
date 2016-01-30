@@ -15,6 +15,11 @@
                         - for (var i = 1; i < 22; i++) {
                             option(value="#{i}") #{i}
                         - }
+                ul(class="list-inline")
+                    li(v-for="x in tags")
+                        label.checkbox-inline
+                            input.tag(type="checkbox" id="tag{{ x.id }}" value="{{ x.id }}")
+                            span.label.label-default {{ x.name }}
             .modal-footer
                 button.btn.btn-default(type="button" data-dismiss="modal") 戻る
                 button.btn.btn-primary(type="button" data-dismiss="modal" @click="updateMemo()") OK！

@@ -202,7 +202,8 @@ var vmEditMemoModal = new Vue({
     data: {
         targetIndex: 0,
         memo: '',
-        zoom: '11'
+        zoom: '11',
+        tags: appStorage.getTags()
     },
     methods: {
         updateMemo: function () {

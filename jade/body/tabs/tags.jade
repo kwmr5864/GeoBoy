@@ -11,5 +11,5 @@
             ul.list-group
                 li.list-group-item(v-for="x in tags")
                     span.badge
-                    {{ x.name }}
+                    span {{ x.name }}
                     button.btn.btn-default(type="button" @click="deleteTag(x.id)") 消す
