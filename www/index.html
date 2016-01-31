@@ -164,9 +164,16 @@ under the License.
               <div class="input-group-addon">名前</div>
               <input type="text" placeholder="チェックした場所" v-model="memo" class="form-control">
             </div>
+            <ul class="list-inline">
+              <li v-for="x in tags">
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="tag{{ x.id }}" value="{{ x.id }}" v-model="checkedTags" class="tag"><span class="label label-default">{{ x.name }}</span>
+                </label>
+              </li>
+            </ul>
           </div>
           <div class="modal-footer">
-            <button type="button" data-dismiss="modal" @click="addMemo()" class="btn btn-primary">OK！</button>
+            <button type="button" data-dismiss="modal" @click="add()" class="btn btn-primary">OK！</button>
           </div>
         </div>
       </div>

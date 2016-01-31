@@ -191,11 +191,16 @@ var vmAddMemoModal = new Vue({
     el: '#addMemoModal',
     data: {
         targetIndex: 0,
-        memo: ''
+        memo: '',
+        tags: appStorage.getTags(),
+        checkedTags: []
     },
     methods: {
-        addMemo: function () {
-            appStorage.updateLog(this.targetIndex, { memo: this.memo });
+        add: function () {
+            appStorage.updateLog(this.targetIndex, {
+                memo: this.memo,
+                tags: this.checkedTags
+            });
         }
     }
 });
