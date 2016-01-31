@@ -29,6 +29,22 @@
     margin: 0 0 0 5px;
 }
 
+#logs .panel-body {
+    padding: 0;
+}
+
+#logs .list-inline {
+    margin: 5px;
+}
+
+#logs .table {
+    margin-bottom: 0;
+}
+
+#logs .btn-group {
+    min-width: 110px;
+}
+
 #tags .list-group {
     margin: 15px 0 0 0;
 }
