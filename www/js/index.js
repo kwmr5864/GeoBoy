@@ -286,6 +286,8 @@ var vm = new Vue({
     data: {
         message: 'ジオボーイで今いる場所をチェックしよう！',
         logs: appStorage.getLogs(),
+        searchTags: appStorage.getTags(),
+        checkedSearchTags: [],
         defaultZoom: appStorage.getDefaultZoom()
     },
     methods: {
@@ -306,6 +308,33 @@ var vm = new Vue({
         displayZoom: function (zoom) {
             return zoom ? "[\u30BA\u30FC\u30E0: " + zoom + "]" : '';
         },
+        searchLogs: function () {
+            var allLogs = appStorage.getLogs();
+            var logs = [];
+            if (0 < this.checkedSearchTags.length) {
+                for (var logIndex in allLogs) {
+                    var log = allLogs[logIndex];
+                    var tags = log.tags;
+                    if (tags != null && 0 < tags.length) {
+                        var pushable = true;
+                        for (var i in this.checkedSearchTags) {
+                            var checkedSearchTag = this.checkedSearchTags[i];
+                            if ($.inArray(checkedSearchTag, tags) < 0) {
+                                pushable = false;
+                                break;
+                            }
+                        }
+                        if (pushable) {
+                            logs.push(log);
+                        }
+                    }
+                }
+            }
+            else {
+                logs = allLogs;
+            }
+            this.logs = logs;
+        },
         redraw: function (x) {
             var homeTab = $('a[href="#home"]');
             homeTab.tab('show');
@@ -322,4 +351,7 @@ var vm = new Vue({
             targetModal.modal();
         }
     }
+});
+vm.$watch('checkedSearchTags', function () {
+    vm.searchLogs();
 });

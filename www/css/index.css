@@ -33,6 +33,10 @@
     padding: 0;
 }
 
+#logs .list-inline {
+    margin: 5px;
+}
+
 #logs .table {
     margin-bottom: 0;
 }

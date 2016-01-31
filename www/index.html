@@ -68,6 +68,13 @@ under the License.
               <h2 class="panel-title">チェックした場所が見れるよ！</h2>
             </div>
             <div class="panel-body">
+              <ul class="list-inline">
+                <li v-for="x in searchTags">
+                  <label class="checkbox-inline">
+                    <input type="checkbox" id="tag{{ x.id }}" value="{{ x.id }}" v-model="checkedSearchTags" class="tag"><span class="label label-default">{{ x.name }}</span>
+                  </label>
+                </li>
+              </ul>
               <table class="table table-striped table-hover table-condensed">
                 <thead>
                   <tr>
