@@ -1,0 +1,15 @@
+#tags.tab-pane
+    .panel.panel-default
+        .panel-heading
+            h2.panel-title タグを作れるよ！
+        .panel-body
+            .input-group
+                .input-group-addon タグ名
+                input.form-control(type="text" v-model="tag")
+                span.input-group-btn
+                    button.btn.btn-primary(type="button" @click="addTag()") 追加
+            ul.list-group
+                li.list-group-item(v-for="x in tags")
+                    span.badge
+                    span {{ x.name }}
+                    button.btn.btn-default(type="button" @click="deleteTag(x.id)") 消す

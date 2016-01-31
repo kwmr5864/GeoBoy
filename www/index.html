@@ -44,6 +44,7 @@ under the License.
         <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
         <li><a href="#logs" data-toggle="tab">Logs</a></li>
         <li><a href="#settings" data-toggle="tab">Settings</a></li>
+        <li><a href="#tags" data-toggle="tab">Tags</a></li>
       </ul>
       <div class="tab-content">
         <div id="home" class="tab-pane in active">
@@ -53,9 +54,9 @@ under the License.
             </div>
             <div class="panel-body">
               <div class="btn-group">
-                <button @click="geoPosition.getPosition()" class="btn btn-primary">チェック</button>
-                <button @click="geoPosition.watchPosition(true)" class="btn btn-default">ウォッチ</button>
-                <button @click="geoPosition.watchPosition(false)" class="btn btn-default">ストップ</button>
+                <button @click="check()" class="btn btn-primary">チェック</button>
+                <button @click="watch()" class="btn btn-default">ウォッチ</button>
+                <button @click="stop()" class="btn btn-default">ストップ</button>
               </div>
             </div>
           </div>
@@ -131,6 +132,25 @@ under the License.
             </div>
           </div>
         </div>
+        <div id="tags" class="tab-pane">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2 class="panel-title">タグを作れるよ！</h2>
+            </div>
+            <div class="panel-body">
+              <div class="input-group">
+                <div class="input-group-addon">タグ名</div>
+                <input type="text" v-model="tag" class="form-control"><span class="input-group-btn">
+                  <button type="button" @click="addTag()" class="btn btn-primary">追加</button></span>
+              </div>
+              <ul class="list-group">
+                <li v-for="x in tags" class="list-group-item"><span class="badge"></span><span>{{ x.name }}</span>
+                  <button type="button" @click="deleteTag(x.id)" class="btn btn-default">消す</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div id="addMemoModal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="false" class="modal fade">
@@ -144,9 +164,16 @@ under the License.
               <div class="input-group-addon">名前</div>
               <input type="text" placeholder="チェックした場所" v-model="memo" class="form-control">
             </div>
+            <ul class="list-inline">
+              <li v-for="x in tags">
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="tag{{ x.id }}" value="{{ x.id }}" v-model="checkedTags" class="tag"><span class="label label-default">{{ x.name }}</span>
+                </label>
+              </li>
+            </ul>
           </div>
           <div class="modal-footer">
-            <button type="button" data-dismiss="modal" @click="addMemo()" class="btn btn-primary">OK！</button>
+            <button type="button" data-dismiss="modal" @click="add()" class="btn btn-primary">OK！</button>
           </div>
         </div>
       </div>
@@ -189,10 +216,17 @@ under the License.
                 <option value="21">21</option>
               </select>
             </div>
+            <ul class="list-inline">
+              <li v-for="x in tags">
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="tag{{ x.id }}" value="{{ x.id }}" v-model="checkedTags" class="tag"><span class="label label-default">{{ x.name }}</span>
+                </label>
+              </li>
+            </ul>
           </div>
           <div class="modal-footer">
             <button type="button" data-dismiss="modal" class="btn btn-default">戻る</button>
-            <button type="button" data-dismiss="modal" @click="updateMemo()" class="btn btn-primary">OK！</button>
+            <button type="button" data-dismiss="modal" @click="update()" class="btn btn-primary">OK！</button>
           </div>
         </div>
       </div>

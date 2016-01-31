@@ -5,7 +5,7 @@
                 small {{ displayZoom(defaultZoom) }}
         .panel-body
             .btn-group
-                button.btn.btn-primary(@click="geoPosition.getPosition()") チェック
-                button.btn.btn-default(@click="geoPosition.watchPosition(true)") ウォッチ
-                button.btn.btn-default(@click="geoPosition.watchPosition(false)") ストップ
+                button.btn.btn-primary(@click="check()") チェック
+                button.btn.btn-default(@click="watch()") ウォッチ
+                button.btn.btn-default(@click="stop()") ストップ
     #map

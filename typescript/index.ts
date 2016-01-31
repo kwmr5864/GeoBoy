@@ -26,11 +26,16 @@ var vmAddMemoModal = new Vue({
     el: '#addMemoModal',
     data: {
         targetIndex: 0,
-        memo: ''
+        memo: '',
+        tags: appStorage.getTags(),
+        checkedTags: [],
     },
     methods: {
-        addMemo: function() {
-            appStorage.updateLog(this.targetIndex, {memo: this.memo})
+        add: function() {
+            appStorage.updateLog(this.targetIndex, {
+                memo: this.memo,
+                tags: this.checkedTags,
+            })
         }
     }
 })
@@ -40,13 +45,16 @@ var vmEditMemoModal = new Vue({
     data: {
         targetIndex: 0,
         memo: '',
-        zoom: '11'
+        zoom: '11',
+        tags: appStorage.getTags(),
+        checkedTags: [],
     },
     methods: {
-        updateMemo: function() {
+        update: function() {
             appStorage.updateLog(this.targetIndex, {
                 memo: this.memo,
-                zoom: +this.zoom
+                zoom: +this.zoom,
+                tags: this.checkedTags,
             })
         }
     }
@@ -66,12 +74,58 @@ var vmSettings = new Vue({
     }
 })
 
+var vmTags = new Vue({
+    el: '#tags',
+    data: {
+        index: appStorage.getTagIndex(),
+        tag: '',
+        tags: appStorage.getTags()
+    },
+    methods: {
+        addTag: function() {
+            this.tags.unshift({
+                id: this.index,
+                name: this.tag
+            })
+            this.index++
+            appStorage.saveTags(this.tags, this.index)
+        },
+        deleteTag: function(id: number) {
+            for (var i in this.tags) {
+                var tag = this.tags[i]
+                if (tag['id'] == id) {
+                    this.tags.splice(i, 1)
+                    appStorage.saveTags(this.tags, this.index)
+                    break
+                }
+            }
+        }
+    }
+})
+
+var vmHome = new Vue({
+    el: '#home',
+    data: {
+        geoPosition: new GeoPosition(),
+    },
+    methods: {
+        check: function() {
+            this.geoPosition.getPosition()
+        },
+        watch: function() {
+            this.geoPosition.watchPosition(true)
+        },
+        stop: function() {
+            this.geoPosition.watchPosition(false)
+        }
+    }
+})
+
 var vm = new Vue({
     el: '#main',
     data: {
         message: 'ジオボーイで今いる場所をチェックしよう！',
         logs: appStorage.getLogs(),
-        geoPosition: new GeoPosition(),
         defaultZoom: appStorage.getDefaultZoom()
     },
     methods: {
@@ -102,6 +156,7 @@ var vm = new Vue({
             vmEditMemoModal.targetIndex = x.index
             vmEditMemoModal.memo = x.memo
             vmEditMemoModal.zoom = x.zoom
+            vmEditMemoModal.checkedTags = x.tags ? x.tags : []
             var targetModal: any = $('#editMemoModal')
             targetModal.modal()
         }

@@ -1,9 +1,11 @@
 var Log = (function () {
-    function Log(index, lat, lon, zoom) {
+    function Log(index, lat, lon, zoom, tags) {
+        if (tags === void 0) { tags = []; }
         this.index = index;
         this.lat = lat;
         this.lon = lon;
         this.zoom = zoom;
+        this.tags = tags;
         this.createdAt = new Date().getTime();
         this.memo = '';
     }
@@ -17,6 +19,10 @@ var AppStorage = (function () {
             index: 1,
             logs: []
         };
+        if (this.storage['tagIndex'] == null || this.storage['tags'] == null) {
+            this.storage['tagIndex'] = 1;
+            this.storage['tags'] = [];
+        }
     }
     AppStorage.prototype.addLog = function (log) {
         this.storage['logs'].push(log);
@@ -59,11 +65,22 @@ var AppStorage = (function () {
         this.storage['defaults'] = defaults;
         this.save();
     };
+    AppStorage.prototype.saveTags = function (tags, index) {
+        this.storage['tags'] = tags;
+        this.storage['tagIndex'] = index;
+        this.save();
+    };
     AppStorage.prototype.getLogs = function () {
         return this.get('logs');
     };
     AppStorage.prototype.getIndex = function () {
         return this.get('index');
+    };
+    AppStorage.prototype.getTags = function () {
+        return this.get('tags');
+    };
+    AppStorage.prototype.getTagIndex = function () {
+        return this.get('tagIndex');
     };
     AppStorage.prototype.getDefaultZoom = function () {
         var defaults = this.getDefaults();
@@ -174,11 +191,16 @@ var vmAddMemoModal = new Vue({
     el: '#addMemoModal',
     data: {
         targetIndex: 0,
-        memo: ''
+        memo: '',
+        tags: appStorage.getTags(),
+        checkedTags: []
     },
     methods: {
-        addMemo: function () {
-            appStorage.updateLog(this.targetIndex, { memo: this.memo });
+        add: function () {
+            appStorage.updateLog(this.targetIndex, {
+                memo: this.memo,
+                tags: this.checkedTags
+            });
         }
     }
 });
@@ -187,13 +209,16 @@ var vmEditMemoModal = new Vue({
     data: {
         targetIndex: 0,
         memo: '',
-        zoom: '11'
+        zoom: '11',
+        tags: appStorage.getTags(),
+        checkedTags: []
     },
     methods: {
-        updateMemo: function () {
+        update: function () {
             appStorage.updateLog(this.targetIndex, {
                 memo: this.memo,
-                zoom: +this.zoom
+                zoom: +this.zoom,
+                tags: this.checkedTags
             });
         }
     }
@@ -211,12 +236,56 @@ var vmSettings = new Vue({
         }
     }
 });
+var vmTags = new Vue({
+    el: '#tags',
+    data: {
+        index: appStorage.getTagIndex(),
+        tag: '',
+        tags: appStorage.getTags()
+    },
+    methods: {
+        addTag: function () {
+            this.tags.unshift({
+                id: this.index,
+                name: this.tag
+            });
+            this.index++;
+            appStorage.saveTags(this.tags, this.index);
+        },
+        deleteTag: function (id) {
+            for (var i in this.tags) {
+                var tag = this.tags[i];
+                if (tag['id'] == id) {
+                    this.tags.splice(i, 1);
+                    appStorage.saveTags(this.tags, this.index);
+                    break;
+                }
+            }
+        }
+    }
+});
+var vmHome = new Vue({
+    el: '#home',
+    data: {
+        geoPosition: new GeoPosition()
+    },
+    methods: {
+        check: function () {
+            this.geoPosition.getPosition();
+        },
+        watch: function () {
+            this.geoPosition.watchPosition(true);
+        },
+        stop: function () {
+            this.geoPosition.watchPosition(false);
+        }
+    }
+});
 var vm = new Vue({
     el: '#main',
     data: {
         message: 'ジオボーイで今いる場所をチェックしよう！',
         logs: appStorage.getLogs(),
-        geoPosition: new GeoPosition(),
         defaultZoom: appStorage.getDefaultZoom()
     },
     methods: {
@@ -248,6 +317,7 @@ var vm = new Vue({
             vmEditMemoModal.targetIndex = x.index;
             vmEditMemoModal.memo = x.memo;
             vmEditMemoModal.zoom = x.zoom;
+            vmEditMemoModal.checkedTags = x.tags ? x.tags : [];
             var targetModal = $('#editMemoModal');
             targetModal.modal();
         }

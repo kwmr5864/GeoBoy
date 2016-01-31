@@ -7,7 +7,11 @@ class AppStorage {
 		var data: string = localStorage.getItem(AppStorage.STORAGE_KEY)
 		this.storage = data ? JSON.parse(data) : {
 			index: 1,
-			logs: []
+			logs: [],
+		}
+		if (this.storage['tagIndex'] == null || this.storage['tags'] == null) {
+			this.storage['tagIndex'] = 1
+			this.storage['tags'] = []
 		}
 	}
 	addLog(log: Log) {
@@ -51,11 +55,22 @@ class AppStorage {
 	    this.storage['defaults'] = defaults
 	    this.save()
 	}
+    saveTags(tags: [{[key: string]: any}], index: number) {
+		this.storage['tags'] = tags
+		this.storage['tagIndex'] = index
+		this.save()
+	}
 	getLogs(): [Log] {
 		return this.get('logs')
 	}
 	getIndex(): number {
 	    return this.get('index')
+	}
+	getTags(): [{[key: string]: any}] {
+	    return this.get('tags')
+	}
+	getTagIndex(): number {
+	    return this.get('tagIndex')
 	}
 	getDefaultZoom(): number {
 	    var defaults = this.getDefaults()
@@ -66,7 +81,7 @@ class AppStorage {
 	    var defaults = this.get('defaults')
 	    return defaults ? defaults : {}
 	}
-	private get(name: string): string {
+	private get(name: string): any {
 	    return this.storage[name]
 	}
 	private save() {
