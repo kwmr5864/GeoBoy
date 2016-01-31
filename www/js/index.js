@@ -311,6 +311,7 @@ var vm = new Vue({
         searchLogs: function () {
             var allLogs = appStorage.getLogs();
             var logs = [];
+            var message = '';
             if (0 < this.checkedSearchTags.length) {
                 for (var logIndex in allLogs) {
                     var log = allLogs[logIndex];
@@ -329,11 +330,29 @@ var vm = new Vue({
                         }
                     }
                 }
+                var checkedTagNames = [];
+                for (var i in this.searchTags) {
+                    var tag = this.searchTags[i];
+                    if (-1 < $.inArray(String(tag.id), this.checkedSearchTags)) {
+                        checkedTagNames.push(tag.name);
+                    }
+                    if (checkedTagNames.length == this.checkedSearchTags.length) {
+                        break;
+                    }
+                }
+                if (0 < logs.length) {
+                    message = checkedTagNames.join(',') + "\u306E\u30BF\u30B0\u304C\u3064\u3044\u3066\u308B\u30ED\u30B0\u304C\u898B\u308C\u308B\u3088\uFF01";
+                }
+                else {
+                    message = checkedTagNames.join(',') + "\u306E\u30BF\u30B0\u304C\u3064\u3044\u3066\u308B\u30ED\u30B0\u306F\u307E\u3060\u306A\u3044\u3088\uFF01";
+                }
             }
             else {
                 logs = allLogs;
+                message = '全部のログが見れるよ！';
             }
             this.logs = logs;
+            this.displayMessage(message + " <small>[" + logs.length + "\u4EF6]</small> ");
         },
         redraw: function (x) {
             var homeTab = $('a[href="#home"]');

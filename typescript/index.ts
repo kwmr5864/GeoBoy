@@ -150,6 +150,7 @@ var vm = new Vue({
         searchLogs: function() {
             let allLogs = appStorage.getLogs()
             var logs = []
+            var message = ''
             if (0 < this.checkedSearchTags.length) {
                 for (let logIndex in allLogs) {
                     let log = allLogs[logIndex]
@@ -168,10 +169,27 @@ var vm = new Vue({
                         }
                     }
                 }
+                var checkedTagNames = []
+                for (let i in this.searchTags) {
+                    let tag = this.searchTags[i]
+                    if (-1 < $.inArray(String(tag.id), this.checkedSearchTags)) {
+                        checkedTagNames.push(tag.name)
+                    }
+                    if (checkedTagNames.length == this.checkedSearchTags.length) {
+                        break
+                    }
+                }
+                if (0 < logs.length) {
+                    message = `${checkedTagNames.join(',')}のタグがついてるログが見れるよ！`
+                } else {
+                    message = `${checkedTagNames.join(',')}のタグがついてるログはまだないよ！`
+                }
             } else {
                 logs = allLogs
+                message = '全部のログが見れるよ！'
             }
             this.logs = logs
+            this.displayMessage(`${message} <small>[${logs.length}件]</small> `)
         },
         redraw: function(x: Log) {
             var homeTab: any = $('a[href="#home"]')
