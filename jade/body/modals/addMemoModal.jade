@@ -7,5 +7,10 @@
                 .input-group
                     .input-group-addon 名前
                     input.form-control(type="text" placeholder="チェックした場所" v-model="memo")
+                ul(class="list-inline")
+                    li(v-for="x in tags")
+                        label.checkbox-inline
+                            input.tag(type="checkbox" id="tag{{ x.id }}" value="{{ x.id }}" v-model="checkedTags")
+                            span.label.label-default {{ x.name }}
             .modal-footer
-                button.btn.btn-primary(type="button" data-dismiss="modal" @click="addMemo()") OK！
+                button.btn.btn-primary(type="button" data-dismiss="modal" @click="add()") OK！
