@@ -3,21 +3,20 @@
         .panel-heading
             h2.panel-title チェックした場所が見れるよ！
         .panel-body
-            .table-responsive
-                table.table.table-striped.table-hover.table-condensed
-                    thead
-                        tr
-                            th No.
-                            th チェックした日
-                            th
-                    tbody
-                        tr(v-for="x in logs")
-                            td {{ x.index }}
-                            td(@click="openEditForm(x)")
-                                p {{ displayDate(x.createdAt) }}
-                                    small {{ displayZoom(x.zoom) }} {{ displayTime(x.createdAt) }}
-                                p {{ x.memo }}
-                            td
-                                .btn-group
-                                    button.btn.btn-primary(@click="redraw(x)") 開く
-                                    button.btn.btn-default(@click="deleteLog(x.index)") 消す
+            table.table.table-striped.table-hover.table-condensed
+                thead
+                    tr
+                        th No.
+                        th チェックした日
+                        th
+                tbody
+                    tr(v-for="x in logs")
+                        td {{ x.index }}
+                        td(@click="openEditForm(x)")
+                            p {{ displayDate(x.createdAt) }}
+                                small {{ displayZoom(x.zoom) }} {{ displayTime(x.createdAt) }}
+                            p {{ x.memo }}
+                        td
+                            .btn-group
+                                button.btn.btn-primary(@click="redraw(x)") 開く
+                                button.btn.btn-default(@click="deleteLog(x.index)") 消す

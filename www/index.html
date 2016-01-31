@@ -68,32 +68,30 @@ under the License.
               <h2 class="panel-title">チェックした場所が見れるよ！</h2>
             </div>
             <div class="panel-body">
-              <div class="table-responsive">
-                <table class="table table-striped table-hover table-condensed">
-                  <thead>
-                    <tr>
-                      <th>No.</th>
-                      <th>チェックした日</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="x in logs">
-                      <td>{{ x.index }}</td>
-                      <td @click="openEditForm(x)">
-                        <p>{{ displayDate(x.createdAt) }}<small>{{ displayZoom(x.zoom) }} {{ displayTime(x.createdAt) }}</small></p>
-                        <p>{{ x.memo }}</p>
-                      </td>
-                      <td>
-                        <div class="btn-group">
-                          <button @click="redraw(x)" class="btn btn-primary">開く</button>
-                          <button @click="deleteLog(x.index)" class="btn btn-default">消す</button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              <table class="table table-striped table-hover table-condensed">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>チェックした日</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="x in logs">
+                    <td>{{ x.index }}</td>
+                    <td @click="openEditForm(x)">
+                      <p>{{ displayDate(x.createdAt) }}<small>{{ displayZoom(x.zoom) }} {{ displayTime(x.createdAt) }}</small></p>
+                      <p>{{ x.memo }}</p>
+                    </td>
+                    <td>
+                      <div class="btn-group">
+                        <button @click="redraw(x)" class="btn btn-primary">開く</button>
+                        <button @click="deleteLog(x.index)" class="btn btn-default">消す</button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
